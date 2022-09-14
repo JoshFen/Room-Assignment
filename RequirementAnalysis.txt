@@ -1,0 +1,32 @@
+############################################ Client Needs #############################################
+
+The client is looking for a desktop application that can automate the room assignment process for
+students at the start of each school year. The application will sort students accoridng to her manual
+process :
+
+- Matching roomate preferences
+- Learning Living Prefered students
+- Fill gaps with students who have floor & room preferences
+- Fill remaining spots and waitlist spots with students who did not list preferences
+
+The program should output the desired room plans in some kind of spread sheet or display that is easily 
+read and can be copited for data entry. The client could also use the addition of sheets for Learning
+Living waitlisted students and regular waitlisted students with housing contracts. 
+
+############################################ Info We Need #############################################
+
+After meeting with the client there are several data forms we need access to, the first is a detailed
+form containing floor layouts for the dormatory. This will the number of rooms on each floor, room
+numbers and how many students a room can accomidate. The second form is the exported excell sheet from 
+e-living which contains the information needed for students who have recieved a housing contract and 
+need to be assigned a room. As of now these are the three main documents we need and are currently in
+the process of getting authorization to recieve these documnets from Mrs. Wescott.
+
+############################################# Work-Flow ###############################################
+
+The program should operate by taking input in the form of an exported excell spread sheet from the
+e-living website. This spreadsheet will need to be parsed and a specified 'blocking' of the LionsGate
+floors will generate which rooms are designated female/male based on contract numbers. Then some kind 
+of algorithm will need to be applied to the data to replicate the manual process of sorting students
+into appropraite rooms. This data will be display along with similar spreadsheets for more specific 
+groups of students to create a waitlist queue. 
