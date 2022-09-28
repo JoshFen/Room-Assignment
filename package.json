@@ -1,0 +1,23 @@
+{
+  "name": "room-assignment-app",
+  "version": "1.0.0",
+  "description": "\"Room assingment app for Lions Gate\"",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoshFen/Room-Assignment.git"
+  },
+  "author": "Joshua Fentress,  Jesse Fentres, Audrita Chowdhury & Keval Patel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoshFen/Room-Assignment/issues"
+  },
+  "homepage": "https://github.com/JoshFen/Room-Assignment#readme",
+  "devDependencies": {
+    "electron": "^20.2.0"
+  }
+}
