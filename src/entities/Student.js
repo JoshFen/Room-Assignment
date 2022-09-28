@@ -5,7 +5,6 @@ class Student{
         this.fName = fName; // Student first name.
         this.lName = lName; // Student last name.
         this.preferences = preferences; // Object of student assignment preferences.
-
     }
 
     getSID(){
