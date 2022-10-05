@@ -1,6 +1,3 @@
-# Room-Assignment
-CMPSC 487 Room Assignment Project
-
 # Room-Assignment Project
 #### CMPSC 487W Room Assignment Project for Lion's Gate
 This application was created by Jesse Fentress, Josh Fentress,
