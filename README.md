@@ -4,7 +4,7 @@ CMPSC 487 Room Assignment Project
 # Room-Assignment Project
 #### CMPSC 487W Room Assignment Project for Lion's Gate
 This application was created by Jesse Fentress, Josh Fentress,
-Audrita Chowhurry, and Keval Patel to automate the room 
+Audrita Chowdhury, and Keval Patel to automate the room 
 assignment process of Penn State Abington students living at
 Lion's Gate.
 
