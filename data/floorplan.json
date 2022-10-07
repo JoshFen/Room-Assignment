@@ -1,0 +1,394 @@
+[
+    {
+     "roomNumber": 101,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 102,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 103,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 104,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 105,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 106,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 107,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 108,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 109,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 110,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 112,
+     "roomSize": "STUDIO"
+    },
+    {
+     "roomNumber": 113,
+     "roomSize": "3BD ADA"
+    },
+    {
+     "roomNumber": 114,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 201,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 202,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 203,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 204,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 205,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 206,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 207,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 208,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 209,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 210,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 212,
+     "roomSize": "STUDIO"
+    },
+    {
+     "roomNumber": 213,
+     "roomSize": "3BD ADA"
+    },
+    {
+     "roomNumber": 214,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 215,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 216,
+     "roomSize": "STUDIO"
+    },
+    {
+     "roomNumber": 217,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 218,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 219,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 220,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 221,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 222,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 223,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 301,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 302,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 303,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 304,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 305,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 306,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 307,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 308,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 309,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 310,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 312,
+     "roomSize": "STUDIO"
+    },
+    {
+     "roomNumber": 313,
+     "roomSize": "3BD ADA"
+    },
+    {
+     "roomNumber": 314,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 315,
+     "roomSize": "STUDIO"
+    },
+    {
+     "roomNumber": 316,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 317,
+     "roomSize": "STUDIO"
+    },
+    {
+     "roomNumber": 318,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 319,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 320,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 321,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 322,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 323,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 324,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 401,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 402,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 403,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 404,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 405,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 406,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 407,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 408,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 409,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 410,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 412,
+     "roomSize": "STUDIO"
+    },
+    {
+     "roomNumber": 413,
+     "roomSize": "3BD ADA"
+    },
+    {
+     "roomNumber": 414,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 415,
+     "roomSize": "STUDIO"
+    },
+    {
+     "roomNumber": 416,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 418,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 419,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 420,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 421,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 422,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 423,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 424,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 501,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 502,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 503,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 505,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 506,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 507,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 509,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 510,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 512,
+     "roomSize": "STUDIO"
+    },
+    {
+     "roomNumber": 513,
+     "roomSize": "3BD ADA"
+    },
+    {
+     "roomNumber": 514,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 515,
+     "roomSize": "STUDIO"
+    },
+    {
+     "roomNumber": 517,
+     "roomSize": "3BD"
+    },
+    {
+     "roomNumber": 518,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 519,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 521,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 522,
+     "roomSize": "2BD"
+    },
+    {
+     "roomNumber": 523,
+     "roomSize": "2BD"
+    }
+   ]
