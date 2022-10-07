@@ -19,5 +19,8 @@
   "homepage": "https://github.com/JoshFen/Room-Assignment#readme",
   "devDependencies": {
     "electron": "^20.2.0"
+  },
+  "dependencies": {
+    "simple-excel-to-json": "^2.3.0"
   }
 }
