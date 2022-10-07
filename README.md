@@ -34,3 +34,14 @@ The application should now be running on your machine.
 
 ##### Using the Application:
 
+#### Files:
+
+Floor Plan
+```bash
+https://docs.google.com/spreadsheets/d/1nQpkJox58KUN-7HH0phnwhWES4HWy7d_/edit?usp=sharing&ouid=104015430228752190754&rtpof=true&sd=true
+```
+
+Students w/ Preferences:
+```bash
+https://docs.google.com/spreadsheets/d/1rHDZZSxfJoZcr9EIXwXGdbVNpJ1a5bed/edit?usp=sharing&ouid=104015430228752190754&rtpof=true&sd=true
+```
