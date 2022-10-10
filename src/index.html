@@ -4,12 +4,21 @@
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <link rel="stylesheet" href="index.css">
     <title>Hello World!</title>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
+    <div>
+      <div>
+        <form id="excelSheetForm">
+            <input id="fileInput" name="file" type="file" accept=".xls, .xlsx"/>
+            <button id="formSubmitButton" type="submit">Run</button>
+        </form>
+        <div id="loadingContainer">
+          <h1>Loading</h1>
+        </div>
+      </div>
+    </div>
   </body>
+  <script src="renderer.js"></script>
 </html>

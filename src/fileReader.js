@@ -1,12 +1,15 @@
-var parser = require('simple-excel-to-json')
+let parser = require('simple-excel-to-json')
 
-function readExcel(){
-    try{
-        var doc = parser.parseXls2Json('./data/CSProjectWithoutNames.xls'); 
-        console.log(doc[0])
+// Reads .xls files and converts them to JSON
+function readExcel(file){
+    try {
+        // Variable 'doc' holds the converted JSON
+        let doc = parser.parseXls2Json(file); 
+        return doc[0]
       }
       catch(err){
         console.log(err)
+        return err
       }
 }
 
