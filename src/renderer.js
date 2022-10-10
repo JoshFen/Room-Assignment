@@ -8,7 +8,7 @@ document.getElementById('excelSheetForm').onsubmit = async () => {
      * channel in preload.js. We await the response, and when we get it
      * we trigger the isLoading() function defined below.
      */ 
-    const response = await window.api.uploadFile(file).then(
+    const response = await window.api.uploadFile(filePath).then(
         isLoading()
     )
 }

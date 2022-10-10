@@ -5,6 +5,7 @@
  */ 
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { join } = require('path');
+const { readExcel } = require('./fileReader');
 
 /* 
  * Creates the display window with the assigned dimensions
@@ -39,8 +40,7 @@ const createWindow = () => {
    * function body
    */ 
   ipcMain.handle('uploadFile', (channel, data) => {
-    console.log(data);
-    return {isLoading: true};
+    console.log(readExcel(data));
   })
   
   /*
