@@ -3,6 +3,20 @@ const { readExcel } = require("./processes/fileReader");
 function genderSort(){
  // Accept JSON file and seperate students by gender attribute into a list of male/female students.
  // Used both to call below functions
+ let data = readExcel('data\students.xls');
+ let Male = []
+ let Female = []
+ for (let i = 0; i < data.length; i++) {
+    data[i]
+    if (data[i].Gender == 'M') { 
+        Male.push(data[i])
+    }
+    else {
+        Female.push(data[i])
+    }
+    return [Male, Female]
+ }
+
 }
 
 function determinePriority(studentArray){
