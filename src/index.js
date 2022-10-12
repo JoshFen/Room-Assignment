@@ -5,7 +5,7 @@
  */ 
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { join } = require('path');
-const { readExcel } = require('./fileReader');
+const { readExcel } = require('./processes/fileReader');
 
 /* 
  * Creates the display window with the assigned dimensions
