@@ -1,28 +1,31 @@
 function determinePriority(studentArray){
+
+    let roommateQueue = []
+    let LLCQueue = []
+    let locationQueue = []
+    let noPrefQueue = []
+
     // Iterate through array of student objects
-    let queued = {}
     for(const key in studentArray) {
-        if(queued.has(key)){ // Checks if the student was already sorted; i.e. Found as roommate pair.
-            break; 
+
+       if(key["Roomate1Match"] == "1MutualWith1" && key["Roomate_1"] != ley["PSU_ID"]) {
+            roommateQueue.push(key)
+        }  
+        else if(key['Priority'] == "LLC") {
+            LLCQueue.push(key)
+        }  
+        else if(key['Priority'] == 'Location') {
+            locationQueue.push(key)
         }
         else {
-            if(key["Roomate1Match"] == "1MutualWith1" && key["Roomate_1"] != ley["PSU_ID"]) {
-                roommateMatch(); // Create function; take two matchedf students. Pair them, add them to a queue.
-            }  
-            else if(key['Priority'] == "LLC") {
-                LLCPrioirty(key);
-            }      
-        }
+            noPrefQueue.push(key)
+        }     
+    } // End for loop.
 
-    }
-    //First check if they're priority is roomate & check if they have a match that is not themselves.
-    
-    // Second check for LLC priority
+    return [roommateQueue, LLCQueue, locationQueue, noPrefQueue]
+} // End  determinePriority function.
 
-    //Check for floor priiortity
-}
-
-function LLCPriority(student){
+function LLCPriority(studentArray) {
     if(student["Requested_LLC_1"] == "LLC Global Village") {
         if(LLC1Queue.length < LLCFloorSize) {
             LLCQueue.push(student);
@@ -35,3 +38,11 @@ function LLCPriority(student){
 
     }
 } // End of LLCPriority function.
+
+function roommatePriority(studentArray) {
+
+} // End of roomatePriority function.
+
+function locationPrioriy(studentArray) {
+    
+} // End of locationPriority function.
