@@ -7,10 +7,10 @@ function determinePriority(studentArray){
         }
         else {
             if(key["Roomate1Match"] == "1MutualWith1" && key["Roomate_1"] != ley["PSU_ID"]) {
-                // Call roomate prioirty
+                roommateMatch(); // Create function; take two matchedf students. Pair them, add them to a queue.
             }  
             else if(key['Priority'] == "LLC") {
-                
+                LLCPrioirty(key);
             }      
         }
 
@@ -22,6 +22,16 @@ function determinePriority(studentArray){
     //Check for floor priiortity
 }
 
-function LLCPriority(){
+function LLCPriority(student){
+    if(student["Requested_LLC_1"] == "LLC Global Village") {
+        if(LLC1Queue.length < LLCFloorSize) {
+            LLCQueue.push(student);
+        }
+        else {
+              
+        }
+    }
+    else if(student["Requested_LLC_2"] == "LLC First Gen") {
 
-}
+    }
+} // End of LLCPriority function.
