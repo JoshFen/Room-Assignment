@@ -104,6 +104,8 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
 
 } // End of createBlueprint function.
 
+function genderBlocking() {
+}
 //---------------------------------Exports---------------------------------
 module.exports = {
     createBlueprint
