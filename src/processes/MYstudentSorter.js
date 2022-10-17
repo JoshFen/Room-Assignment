@@ -8,7 +8,7 @@ function determinePriority(studentArray){
     // Iterate through array of student objects
     for(const student in studentArray) {
 
-       if(student["Roomate1Match"] == "1MutualWith1" && student["Roomate_1"] != ley["PSU_ID"]) {
+       if(student["Roommate1Match"] == "1MutualWith1" && student["Roommate_1"] != ley["PSU_ID"]) {
             roommateQueue.push(student)
         }  
         else if(student['Priority'] == "LLC") {
@@ -27,7 +27,7 @@ function determinePriority(studentArray){
 
 function roommatePriority(studentArray) {
     
-} // End of roomatePriority function.
+} // End of roommatePriority function.
 
 function LLCPriority(studentArray) {
 
@@ -47,7 +47,7 @@ function LLCPriority(studentArray) {
     return [LLC1Queue, LLC2Queue]
 } // End of LLCPriority function.
 
-function locationPrioriy(studentArray) {
+function locationPriority(studentArray) {
 
     floor1Floor = [] // Queue for students requesting first floor rooms.
     floor2Floor = [] // Queue for students requesting second floor rooms.

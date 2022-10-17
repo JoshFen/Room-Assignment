@@ -1,3 +1,126 @@
+:root {
+    --psu-blue: #20397B;
+    --psu-blue-light:  #496dd0;
+    --psu-blue-dark:  #1a2e65;
+    --success: #198754;
+    --danger: #DC3545;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+* {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+ }
+
+body {
+    -webkit-app-region: no-drag; 
+    height: 99vh; 
+    width: 100vw;
+    overflow: hidden;
+    margin: 0;
+} 
+
 #loadingContainer {
     display: none;
+}
+
+#bannerContainer  {
+    display: flex;
+    justify-content: center;
+}
+
+.btn {
+    color: white;
+    background-color: var(--psu-blue);
+    border: 1px solid var(--psu-blue);
+}
+
+.btn:hover {
+    background-color: var(--psu-blue-dark);
+    border: 1px solid var(--psu-blue);
+    cursor: pointer;
+}
+
+.btn-med {
+    width: 110px;
+    height: 55px;
+    font-size: large;
+    border-radius: 8%;
+    border: none;
+}
+
+.banner { 
+    width: 52%;
+}
+
+form {
+    text-align: -webkit-center;
+    padding-top: 4%;
+}
+
+#dragAndDrop {
+    height: 140px;
+    width: 140px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    padding: 2.5% 5% 2.5% 5%;
+    margin: 20px 0 20px 0;
+    background-color: #f1f1f1;
+}
+
+#dragAndDrop.highlight, #dragAndDrop:hover {
+    opacity: 0.5;
+}
+
+#dragAndDropLabel { 
+    font-weight: 600;
+}
+
+.w-80 {
+    width: 80%;
+}
+
+.dashed-border {
+    border: 1px dashed black;
+    border-radius: 8%;
+}
+
+span {
+    margin-top: 2rem;
+    font-weight: 600;
+}
+
+#chosenFileText {
+    color: grey;
+}
+
+.controls:hover {
+    cursor: pointer;
+    background-color: white;
+}
+
+.controls img:hover {
+    background-color: white;
+}
+
+#menuIcon {
+    padding: 2px;
+    border-radius: 2px;
+}
+
+#formSubmitButton {
+    margin-top: 20px;
+}
+
+#controlBar {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--psu-blue-light);
+    padding: 4px;
 }

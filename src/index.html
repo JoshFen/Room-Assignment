@@ -5,14 +5,32 @@
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <link rel="stylesheet" href="index.css">
-    <title>Hello World!</title>
+    <title>Roommate</title>
   </head>
   <body>
-    <div>
-      <div>
+    <div id="root">
+      <div id="container">
+        <div id="controlBar" class="controls">
+          <img id="menuIcon" width='25px'src="../assets/menu-icon.svg">
+          <div id="windowControls">
+            <img id="minimizeIcon" width='25px'src="../assets/minimize-icon.svg">
+            <img id="closeIcon" width='25px'src="../assets/close-icon.svg">
+          </div>
+        </div>
+        <div id="bannerContainer">
+          <img class="banner" src="../assets/roomate-banner.png">
+        </div>
         <form id="excelSheetForm">
-            <input id="fileInput" name="file" type="file" accept=".xls, .xlsx"/>
-            <button id="formSubmitButton" type="submit">Run</button>
+          <label id="dragAndDropLabel" for="dragAndDrop">Choose a File or Drag and Drop</label>
+          <div id="dragAndDrop" class="dashed-border">
+            <img class="w-80" src="../assets/file-upload.svg">
+          </div>
+          <div id="inputContainer">
+            <input id="fileInput" name="file" type="file" hidden="hidden" accept=".xls"/>
+            <span>Selected File:</span>
+            <span id="chosenFileText">No file selected.</span>
+          </div>
+          <button id="formSubmitButton" class="btn btn-med" type="submit">Run</button>
         </form>
         <div id="loadingContainer">
           <h1>Loading</h1>
@@ -22,3 +40,4 @@
   </body>
   <script src="renderer.js"></script>
 </html>
+

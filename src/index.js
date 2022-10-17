@@ -16,6 +16,9 @@ const createWindow = () => {
     const win = new BrowserWindow({
       width: 800,
       height: 600,
+      frame: true,
+      resizable: false,
+      icon: join(__dirname, '../assets/psulogo.ico'),
       webPreferences: {
         preload: join(__dirname, 'preload.js')
       }
@@ -40,7 +43,7 @@ const createWindow = () => {
    * function body
    */ 
   ipcMain.handle('uploadFile', (channel, data) => {
-    console.log(readExcel(data));
+    console.log(data);
   })
   
   /*
