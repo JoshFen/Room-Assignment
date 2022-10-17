@@ -49,3 +49,24 @@ function floorPriority(){
 
 }
 
+function assignToRoom(studentsArray, floorNumber) {
+    // Students Array should hold a pair of students
+    // 1. access the JSON file where we will write in students to rooms
+    let floorFile = fs.readFile(floorPlanJSON, 'utf8', (err, jsonString) => {
+        if (err) {
+            console.log("File read failed:", err)
+            return
+        }
+    let floorPlan = JSON.parse(jsonString);
+    })
+    //2.a Iterate through the rooms and try to put the students in one that matches
+    /*
+     for (room in floorPlan['floor'][floorNumber]) {
+        // 2.b check if the room['gender'] matches studentArray[0]['Gender']
+        // if they match the add them to floorPlane['floor']['floorNumber'] and return
+     }
+     // 3. If you make it through the above for loop then recall the function for every other floor
+     // assignToRoom(studentArray, 1), assignToRoom(studentArray, 2), etc
+     */
+}
+
