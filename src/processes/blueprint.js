@@ -104,7 +104,21 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
 
 } // End of createBlueprint function.
 
-function genderBlocking() {
+function genderBlocking(floorplanJSON, totalMale, totalFemale) {
+    fs.readFile(floorplanJSON, 'utf8', (err, jsonString) => {
+        if (err) {
+            console.log("File read failed:", err);
+            return;
+        }
+    
+        let floorplan = JSON.parse(jsonString);
+    })
+    // 1. Find the difference in the # of males vs. # of female
+    // ex. if (totalMale > totalFemale) diff = totalMale - totalFemale
+
+    //2. Using the difference, figure out how many rooms needs to be changed;
+    // assume that half the rooms are male and half the rooms are female to start
+    // ex. if 12 students then 2 rooms of 6 should be changed or if 7 then 2 rooms of 4
 }
 //---------------------------------Exports---------------------------------
 module.exports = {
