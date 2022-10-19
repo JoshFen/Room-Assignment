@@ -21,6 +21,7 @@
     "electron": "^20.2.0"
   },
   "dependencies": {
+    "electron-dl": "^3.4.0",
     "simple-excel-to-json": "^2.3.0"
   }
 }

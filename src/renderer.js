@@ -1,3 +1,4 @@
+
 const fileInput = document.getElementById('fileInput');
 const dragAndDropInput = document.getElementById("dragAndDrop");
 let dropArea = document.getElementById('dragAndDrop');
@@ -14,11 +15,16 @@ document.getElementById('excelSheetForm').onsubmit = async () => {
      * main-process so that it can be processed using the 'uploadFile'
      * channel in preload.js. We await the response, and when we get it
      * we trigger the isLoading() function defined below.
-     */ 
+    */ 
     const response = await window.api.uploadFile(filePath).then(
         isLoading()
     )
 }
+
+/*const downloadButton = document.getElementById('downloadFileButton');
+downloadButton.addEventListener('click', async () => {
+   await window.api.downloadFile().then((response) => console.log(response));
+})*/
 
 // Simply displays a loading UI element while our file is being processed.
 function isLoading() {

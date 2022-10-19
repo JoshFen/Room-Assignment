@@ -124,3 +124,15 @@ span {
     background-color: var(--psu-blue-light);
     padding: 4px;
 }
+
+.fileHandleButtons {
+    display: flex;
+    justify-content: center;
+    margin-top: 6rem;
+}
+
+.fileHandleButtons button {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+

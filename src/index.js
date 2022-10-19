@@ -6,6 +6,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { join } = require('path');
 const { readExcel } = require('./processes/fileReader');
+const { download } = require('electron-dl'); 
 
 /* 
  * Creates the display window with the assigned dimensions
@@ -20,7 +21,8 @@ const createWindow = () => {
       resizable: false,
       icon: join(__dirname, '../assets/psulogo.ico'),
       webPreferences: {
-        preload: join(__dirname, 'preload.js')
+        preload: join(__dirname, 'preload.js'),
+        sandbox: false
       }
     })
     // Loads the given html file into the display window
@@ -45,7 +47,13 @@ const createWindow = () => {
   ipcMain.handle('uploadFile', (channel, data) => {
     console.log(data);
   })
-  
+
+  ipcMain.on('downloadFile', async (event, {url}) => {
+    const win = BrowserWindow.getFocusedWindow();
+    await download(win, url);
+    return "Download Successful!";
+ });
+
   /*
    * app is listening on the 'window-all-closed' channel for a 
    * message to close all the application windows.
