@@ -48,10 +48,17 @@ const createWindow = () => {
     console.log(data);
   })
 
-  ipcMain.on('downloadFile', async (event, {url}) => {
+  /*
+   * ipcMan listens for the ipcRenderer to send a download request
+   * with the url location of a file to be downloaded. The download
+   * is started and once it is complete sends a boolean to represent
+   * the success of the download back to the ipcRenderer.
+   */ 
+  ipcMain.handle('downloadFile', async (event, {url}) => {
     const win = BrowserWindow.getFocusedWindow();
-    await download(win, url);
-    return "Download Successful!";
+
+    await download(win, url, {openFolderWhenDone: true});
+    return true;
  });
 
   /*

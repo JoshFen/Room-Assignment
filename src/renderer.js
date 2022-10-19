@@ -23,7 +23,11 @@ document.getElementById('excelSheetForm').onsubmit = async () => {
 
 /*const downloadButton = document.getElementById('downloadFileButton');
 downloadButton.addEventListener('click', async () => {
-   await window.api.downloadFile().then((response) => console.log(response));
+    const response =  await window.api.downloadFile();
+    if (response) {
+        document.getElementById('downloadSuccessText').removeAttribute('hidden');
+        document.getElementById('downloadCheck').removeAttribute('visibility');
+    }
 })*/
 
 // Simply displays a loading UI element while our file is being processed.

@@ -10,5 +10,6 @@ contextBridge.exposeInMainWorld('api', {
     // 'uploadFile' sub-channel sends data from renderer to main
     uploadFile: (data) => ipcRenderer.invoke('uploadFile', data),
     // 'downloadFile' sub-channel allows for result file to be downloaded
-    downloadFile: (data) => ipcRenderer.send('downloadFile', {url: join(__dirname, '../assets/close-icon.svg')})
+    downloadFile: (data) => ipcRenderer.invoke('downloadFile', {url: join(__dirname, '../assets/close-icon.svg')}),
+    downloadComplete: (data) => { console.log(data); ipcRenderer.addListener('downloadComplete', data)}
 })
