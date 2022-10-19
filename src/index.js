@@ -46,6 +46,8 @@ const createWindow = () => {
    */ 
   ipcMain.handle('uploadFile', (channel, data) => {
     console.log(data);
+    let win = BrowserWindow.getFocusedWindow();
+    console.log(win.loadFile('src/postprocess.html'))
   })
 
   /*
@@ -56,7 +58,6 @@ const createWindow = () => {
    */ 
   ipcMain.handle('downloadFile', async (event, {url}) => {
     const win = BrowserWindow.getFocusedWindow();
-
     await download(win, url, {openFolderWhenDone: true});
     return true;
  });
