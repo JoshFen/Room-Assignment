@@ -1,11 +1,14 @@
 class Room {
 
-    constructor(roomNumber, floorNumber, roomSize) {
+    constructor(roomNumber, floorNumber, roomSize, LLC, RARoom, sex) {
         this.roomNumber = roomNumber; 
         this.floorNumber = floorNumber; 
         this.roomSize = roomSize;
         this.tenants = []; // Array to hold students assigned to this room
-        this.isLearningLiving = false;
+        this.isLearningLiving = LLC;
+        this.RARoom = RARoom;
+        this.sex = sex
+
     }
 
     setLearningLiving() {

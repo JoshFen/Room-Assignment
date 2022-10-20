@@ -46,47 +46,57 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
     for(var i = 0; i < data.length; i++){ 
         // Check if the object is from the first floor.
         if(data[i]["roomNumber"] < 200){
+            ra = isRARoom(ata[i]["roomNumber"], 100);
             blueprint["floor"][1]["rooms"][data[i]["roomNumber"]] = {
                 "roomNumber": data[i]["roomNumber"],
                 "roomSize": data[i]["roomSize"],
+                "RARoom" : ra,
                 "LLC": false,
-                "Sex": ""
+                "sex": ""
             }
         }
         // Check if the object is from the second floor.
         else if(data[i]["roomNumber"] < 300){
+            a = isRARoom(ata[i]["roomNumber"], 200);
             blueprint["floor"][2]["rooms"][data[i]["roomNumber"]] = {
                 "roomNumber": data[i]["roomNumber"],
                 "roomSize": data[i]["roomSize"],
+                "RARoom" : ra,
                 "LLC": false,
-                "Sex": ""
+                "sex": ""
             }
         }
         // Check if the object is from the third floor.
         else if(data[i]["roomNumber"] < 400){
+            a = isRARoom(ata[i]["roomNumber"], 100);
             blueprint["floor"][3]["rooms"][data[i]["roomNumber"]] = {
                 "roomNumber": data[i]["roomNumber"],
                 "roomSize": data[i]["roomSize"],
+                "RARoom" : ra,
                 "LLC": false,
-                "Sex": ""
+                "sex": ""
             }
         }
         // Check if the object is from the fourth floor.
         else if(data[i]["roomNumber"] < 500){
+            a = isRARoom(ata[i]["roomNumber"], 100);
             blueprint["floor"][4]["rooms"][data[i]["roomNumber"]] = {
                 "roomNumber": data[i]["roomNumber"],
                 "roomSize": data[i]["roomSize"],
+                "RARoom" : ra,
                 "LLC": false,
-                "Sex": ""
+                "sex": ""
             }
         }
         // Check if the object is from the fifth floor.
         else if(data[i]["roomNumber"] < 600){
+            a = isRARoom(ata[i]["roomNumber"], 100);
             blueprint["floor"][5]["rooms"][data[i]["roomNumber"]] = {
                 "roomNumber": data[i]["roomNumber"],
                 "roomSize": data[i]["roomSize"],
+                "RARoom" : ra,
                 "LLC": false,
-                "Sex": ""
+                "sex": ""
             }
         }
     } // End of for loop.
@@ -120,7 +130,34 @@ function genderBlocking(floorplanJSON, totalMale, totalFemale) {
     // assume that half the rooms are male and half the rooms are female to start
     // ex. if 12 students then 2 rooms of 6 should be changed or if 7 then 2 rooms of 4
 }
+
+function isRARoom(roomNum, floor) {
+    if(roomNum % 100 == 12) { // Every floor has an RA room at _12.
+        return true
+    }
+    else if(floor == 200) { // Floor 2s second RA room is 216.
+        if(roomNum % 200 == 16) {
+            return true
+        }
+    }
+    else if(floor > 200) { // Floors 3, 4 & 5 have a second RA room at _15.
+        if(roomNum % 100 == 15) {
+            return true
+        }
+    return false // This room is not an RA room.
+}
+
+function createRooms(blueprintJSON) {
+    let rooms = []
+    for(floor in blueprintJSON["floor"]){
+        for(room in floor['rooms']){
+            let newRoom =  new Room(room, floor, room["roomSize"], room["LLC"], room["RARoom"], room["sex"] )
+            rooms.push(newRoom)
+        }
+    }
+}
 //---------------------------------Exports---------------------------------
 module.exports = {
-    createBlueprint
+    createBlueprint,
+    createRooms
   };
