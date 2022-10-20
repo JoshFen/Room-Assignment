@@ -36,8 +36,6 @@ function roommatePriority(roommateQueue) {
             }
         }
     }
-
-    
 } // End of roommatePriority function.
 
 function LLCPriority(LLCQueue) {
@@ -68,7 +66,7 @@ function locationPriority(locationQueue) {
 
     // Iterate through array of student objects
     for(const student in locationQueue) {
-        if(student["Requested_Floor_1"] == "First") {
+        if(student["Requested_Floor_1"] == "First" || student["Request_Floor_1"] == "Ground") {
             floor1Floor.push(student)
         }
         else if(student["Requested_Floor_1"] == "Second") {
