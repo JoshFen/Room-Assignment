@@ -1,52 +1,102 @@
 const { readExcel } = require("./processes/fileReader");
 
 function genderSort(){
- // Accept JSON file and seperate students by gender attribute into a list of male/female students.
- // Used both to call below functions
- let data = readExcel('data\students.xls');
- let upperMale = []
- let upperFemale = []
- let lowerMale = []
- let lowerFemale = []
- for (let i = 0; i < data.length; i++) {
-    data[i]
-    if (data[i].Gender == 'M') { 
-        if (data[i].Grouptype=='First-Year') {
-            lowerMale.push[data[i]]
+    // Accept JSON file and separate students by gender attribute into a list of male/female students.
+    // Used both to call below functions
+    let data = readExcel('data\students.xls');
+    let upperMale = []
+    let upperFemale = []
+    let lowerMale = []
+    let lowerFemale = []
+    for (let i = 0; i < data.length; i++) {
+        data[i]
+        if (data[i].Gender == 'M') { 
+            if (data[i].Group_Type=='First-Year') {
+                lowerMale.push[data[i]]
+            }
+            else {
+                upperMale.push(data[i])
+            } 
         }
         else {
-            upperMale.push(data[i])
-        } 
+            if (data[i].Group_Type == 'First-Year') { 
+                lowerFemale.push(data[i])
+            }
+            else {
+                upperFemale.push(data[i])
+            }
+        }
+    }
+    return [upperMale, lowerMale, upperFemale, lowerFemale]
+}
+
+function assignStudents() {
+    const [uM, lM, uF, lF] = genderSort();
+    const uMQueues = determinePriority(uM);
+    const UFQueues = determinePriority(uF);
+    const lMQueues = determinePriority(lM);
+    const lfQueues = determinePriority(lF);
+}
+
+function pairStudents(queue) {
+    let pairs = [];
+    let counter = 0;
+    for (let index = 0; index < queue.length; index + 2) {
+        pairs.push(new TenantPair(queue[index][index + 1]))
+        counter++;
+    }
+    if (counter < queue.length - 1) {
+        // put them somewhere
+    }
+    return pairs;
+}
+
+function assignRoom(tenantPairs, isLLC) {
+    if (isLLC) {
+        // put in LLC room
     }
     else {
-        if (data[i].Grouptype == 'First-Year') { 
-            lowerFemale.push(data[i])
+        let placed = false;
+        let checkedFloors = {
+            'First': false,
+            'Second': false,
+            'Third': false,
+            'Fourth': false,
+            'Fifth': false
         }
-        else {
-            upperFemale.push(data[i])
+        while (!placed)
+        for (pair in tenantPairs) {
+            let desiredFloor = pair.getFirstStudent()['Requested_Floor_1'];
+            if (checkedFloor[desiredFloor]) {
+                for (room in floorPlan[desiredFloor]) {
+                    if (validRoom(room, pair.getFirstStudent())) {
+                        room.assignPairedTenants(pair.getFirstStudent(), pair.getSecondStudent());
+                        placed = true;
+                    }
+                }
+                checkedFloors[desiredFloor] = true;
+            }
+            else {
+                desiredFloor = checkedFloors.map((checked, index) => {
+                    checked = false;
+                })[0]
+                for (room in floorPlan[desiredFloor]) {
+                    if (validRoom(room, pair.getFirstStudent())) {
+                        room.assignPairedTenants(pair.getFirstStudent(), pair.getSecondStudent());
+                        placed = true;
+                    }
+                }
+                checkedFloors[desiredFloor] = true;
+            }
         }
     }
-return [Male, Female]
 }
 
-}
-
-function determinePriority(studentArray){
-    // Iterate through array of student objects
-
-    //First check if they're priority is roomate & check if they have a match that is not themselves.
-    
-    // Second check for LLC priority
-
-    //Check for floor priiortity
-}
-
-function roommatePriority(studentArray){
-
-}
-
-function floorPriority(){
-
+function validRoom(room, student) {
+    if (room.isFull() || room.getGender() != student.getGender()) {
+        return false;
+    }
+    return true;
 }
 
 function assignToRoom(studentsArray, floorNumber) {

@@ -22,7 +22,7 @@ function determinePriority(studentArray){
         }     
     } // End for loop.
 
-    return {roomate: roommateQueue, LLC: LLCQueue, location: locationQueue, noPref: noPrefQueue]
+    return {roomate: roommateQueue, LLC: LLCQueue, location: locationQueue, noPref: noPrefQueue}
 } // End  determinePriority function.
 
 function roommatePriority(roommateQueue) {
