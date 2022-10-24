@@ -51,6 +51,7 @@ const createWindow = () => {
     const [uM, lM, uF, lF] = genderSort(data);
     console.log(Object.keys(lF).length);
     const queuesUM = determinePriority(lF);
+    
     console.log(queuesUM['roommate'].length, queuesUM['LLC1'].length, queuesUM['LLC2'].length, queuesUM['f1'].length, queuesUM['f2'].length, queuesUM['f3'].length, queuesUM['f4'].length, queuesUM['f5'].length, queuesUM['noPref'].length)
     /*const queuesUF = determinePriority(uF);
     console.log(queuesUF['roommate'].length, queuesUF['LLC1'].length, queuesUF['LLC2'], queuesUF['location'].length, queuesUF['noPref'].length)
@@ -59,8 +60,8 @@ const createWindow = () => {
     const queuesLM = determinePriority(lM);
     console.log(queuesLM['roommate'].length, queuesLM['LLC1'].length, queuesLM['LLC2'], queuesLM['location'].length, queuesLM['noPref'].length)
    */
-    //let win = BrowserWindow.getFocusedWindow();
-    //win.loadFile('src/postprocess.html');
+    let win = new BrowserWindow({width: 800, height: 600});
+    win.loadFile('src/postprocess.html');
   })
 
   /*
