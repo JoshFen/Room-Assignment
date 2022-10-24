@@ -5,8 +5,10 @@
  */ 
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { join } = require('path');
-const { readExcel } = require('./processes/fileReader');
 const { download } = require('electron-dl'); 
+const { genderSort, determinePriority } = require('./processes/studentSorter');
+const fs = require('fs');
+const { readExcel } = require('./processes/fileReader');
 
 /* 
  * Creates the display window with the assigned dimensions
@@ -46,8 +48,19 @@ const createWindow = () => {
    */ 
   ipcMain.handle('uploadFile', (channel, data) => {
     console.log(data);
-    let win = BrowserWindow.getFocusedWindow();
-    console.log(win.loadFile('src/postprocess.html'))
+    const [uM, lM, uF, lF] = genderSort(data);
+    console.log(Object.keys(lF).length);
+    const queuesUM = determinePriority(lF);
+    console.log(queuesUM['roommate'].length, queuesUM['LLC1'].length, queuesUM['LLC2'].length, queuesUM['f1'].length, queuesUM['f2'].length, queuesUM['f3'].length, queuesUM['f4'].length, queuesUM['f5'].length, queuesUM['noPref'].length)
+    /*const queuesUF = determinePriority(uF);
+    console.log(queuesUF['roommate'].length, queuesUF['LLC1'].length, queuesUF['LLC2'], queuesUF['location'].length, queuesUF['noPref'].length)
+    const queuesLF = determinePriority(lF);
+    console.log(queuesLF['roommate'].length, queuesLF['LLC1'].length, queuesLF['LLC2'], queuesLF['location'].length, queuesLF['noPref'].length)
+    const queuesLM = determinePriority(lM);
+    console.log(queuesLM['roommate'].length, queuesLM['LLC1'].length, queuesLM['LLC2'], queuesLM['location'].length, queuesLM['noPref'].length)
+   */
+    //let win = BrowserWindow.getFocusedWindow();
+    //win.loadFile('src/postprocess.html');
   })
 
   /*

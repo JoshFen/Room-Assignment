@@ -19,9 +19,7 @@ if (currentPage == 'index.html') {
         * channel in preload.js. We await the response, and when we get it
         * we trigger the isLoading() function defined below.
         */ 
-        const response = await window.api.uploadFile(filePath).then(
-            isLoading()
-        )
+        const response = await window.api.uploadFile(filePath);
     }
 
     // Simply displays a loading UI element while our file is being processed.

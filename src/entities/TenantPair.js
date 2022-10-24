@@ -2,7 +2,7 @@ class TenantPair {
 
     constructor(firstStudent, secondStudent) {
         this.firstStudent = firstStudent;
-        this.secondStudent - secondStudent;
+        this.secondStudent = secondStudent;
     }
 
     getFirstStudent() {
@@ -10,6 +10,8 @@ class TenantPair {
     }
 
     getSecondStudent() {
-        return this.getSecondStudent;
+        return this.secondStudent;
     }
 }
+
+module.exports = TenantPair;
