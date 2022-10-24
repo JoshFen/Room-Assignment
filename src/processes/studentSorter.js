@@ -135,6 +135,7 @@ function assignToRoom(studentsArray, floorNumber) {
 
 function determinePriority(studentArray){
 
+    let raQueue = []
     let roommateQueue = [] // Queue for students with roommate priority.
     let LLCQueue = [] // Queue for students with LLC priority.
     let locationQueue = [] // Queue for students with location priority.
@@ -143,7 +144,10 @@ function determinePriority(studentArray){
     let processedStudent = {}
     for(const student in studentArray) {
         if(processedStudent[student] != true) {
-            if(studentArray[student]["Roommate1Match"] == "1MutualWith1" && studentArray[student]["Roommate_1"] != studentArray[student]["PSU_ID"]) {
+            if (studentArray[student]['Group_Type'] == 'Res Life') {
+                raQueue.push(studentArray[student]);
+            }
+            else if(studentArray[student]["Roommate1Match"] == "1MutualWith1" && studentArray[student]["Roommate_1"] != studentArray[student]["PSU_ID"]) {
                 roommateQueue.push(new TenantPair(studentArray[student], studentArray[studentArray[student]['Roommate_1']]));
                 processedStudent[studentArray[student]['Roommate_1']] = true;
             } 
@@ -160,9 +164,10 @@ function determinePriority(studentArray){
         }   
     } // End for loop.
     const [LLC1Queue, LLC2Queue] = LLCPriority(LLCQueue);
-    //const locationQueue1 = locationPriority(locationQueue);
     const [f1, f2, f3, f4, f5] = locationPriority(locationQueue);
-    return {roommate: roommateQueue, LLC1: LLC1Queue, LLC2: LLC2Queue, f1: f1, f2: f2, f3: f3, f4: f4, f5: f5, noPref: noPrefQueue}
+    const noPrefPairs = pairStudents(noPrefQueue);
+
+    return {ra: raQueue, roommate: roommateQueue, LLC1: LLC1Queue, LLC2: LLC2Queue, f1: f1, f2: f2, f3: f3, f4: f4, f5: f5, noPref: noPrefPairs}
 } // End  determinePriority function.
 
 function roommatePriority(roommateQueue) {

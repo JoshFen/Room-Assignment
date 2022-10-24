@@ -46,7 +46,7 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
     for(var i = 0; i < data.length; i++){ 
         // Check if the object is from the first floor.
         if(data[i]["roomNumber"] < 200){
-            ra = isRARoom(ata[i]["roomNumber"], 100);
+            ra = isRARoom(data[i]["roomNumber"], 100);
             blueprint["floor"][1]["rooms"][data[i]["roomNumber"]] = {
                 "roomNumber": data[i]["roomNumber"],
                 "roomSize": data[i]["roomSize"],
@@ -57,7 +57,7 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
         }
         // Check if the object is from the second floor.
         else if(data[i]["roomNumber"] < 300){
-            a = isRARoom(ata[i]["roomNumber"], 200);
+            ra = isRARoom(data[i]["roomNumber"], 200);
             blueprint["floor"][2]["rooms"][data[i]["roomNumber"]] = {
                 "roomNumber": data[i]["roomNumber"],
                 "roomSize": data[i]["roomSize"],
@@ -68,7 +68,7 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
         }
         // Check if the object is from the third floor.
         else if(data[i]["roomNumber"] < 400){
-            a = isRARoom(ata[i]["roomNumber"], 100);
+            ra = isRARoom(data[i]["roomNumber"], 300);
             blueprint["floor"][3]["rooms"][data[i]["roomNumber"]] = {
                 "roomNumber": data[i]["roomNumber"],
                 "roomSize": data[i]["roomSize"],
@@ -79,7 +79,7 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
         }
         // Check if the object is from the fourth floor.
         else if(data[i]["roomNumber"] < 500){
-            a = isRARoom(ata[i]["roomNumber"], 100);
+            ra = isRARoom(data[i]["roomNumber"], 400);
             blueprint["floor"][4]["rooms"][data[i]["roomNumber"]] = {
                 "roomNumber": data[i]["roomNumber"],
                 "roomSize": data[i]["roomSize"],
@@ -90,7 +90,7 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
         }
         // Check if the object is from the fifth floor.
         else if(data[i]["roomNumber"] < 600){
-            a = isRARoom(ata[i]["roomNumber"], 100);
+            ra = isRARoom(data[i]["roomNumber"], 500);
             blueprint["floor"][5]["rooms"][data[i]["roomNumber"]] = {
                 "roomNumber": data[i]["roomNumber"],
                 "roomSize": data[i]["roomSize"],
@@ -144,8 +144,10 @@ function isRARoom(roomNum, floor) {
         if(roomNum % 100 == 15) {
             return true
         }
+    }
     return false // This room is not an RA room.
 }
+
 
 function createRooms(blueprintJSON) {
     let rooms = []
@@ -158,6 +160,5 @@ function createRooms(blueprintJSON) {
 }
 //---------------------------------Exports---------------------------------
 module.exports = {
-    createBlueprint,
-    createRooms
-  };
+    createBlueprint
+}

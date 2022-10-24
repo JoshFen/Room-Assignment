@@ -52,14 +52,13 @@ const createWindow = () => {
     console.log(Object.keys(lF).length);
     const queuesUM = determinePriority(lF);
     
-    console.log(queuesUM['roommate'].length, queuesUM['LLC1'].length, queuesUM['LLC2'].length, queuesUM['f1'].length, queuesUM['f2'].length, queuesUM['f3'].length, queuesUM['f4'].length, queuesUM['f5'].length, queuesUM['noPref'].length)
-    /*const queuesUF = determinePriority(uF);
-    console.log(queuesUF['roommate'].length, queuesUF['LLC1'].length, queuesUF['LLC2'], queuesUF['location'].length, queuesUF['noPref'].length)
-    const queuesLF = determinePriority(lF);
-    console.log(queuesLF['roommate'].length, queuesLF['LLC1'].length, queuesLF['LLC2'], queuesLF['location'].length, queuesLF['noPref'].length)
-    const queuesLM = determinePriority(lM);
-    console.log(queuesLM['roommate'].length, queuesLM['LLC1'].length, queuesLM['LLC2'], queuesLM['location'].length, queuesLM['noPref'].length)
-   */
+    console.log(queuesUM['ra'].length, queuesUM['roommate'].length, queuesUM['LLC1'].length, queuesUM['LLC2'].length, queuesUM['f1'].length, queuesUM['f2'].length, queuesUM['f3'].length, queuesUM['f4'].length, queuesUM['f5'].length, queuesUM['noPref'].length)
+    const input = JSON.stringify(queuesUM);
+    fs.writeFile("sampleoutout.json", input, err => {
+      if(err){
+          throw err;
+      }
+    })// End of fs.writeFile function.
     let win = new BrowserWindow({width: 800, height: 600});
     win.loadFile('src/postprocess.html');
   })
