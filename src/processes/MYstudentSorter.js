@@ -85,3 +85,43 @@ function locationPriority(locationQueue) {
 
     return [floor1Floor, floor2Floor, floor3Floor, floor4Floor, floor5Floor]
 } // End of locationPriority function.
+
+
+function raRoomAssign(RAQueue) {
+    rooms = {
+        112: '',
+        212: '',
+        216: '',
+        312: '',
+        315: '',
+        412: '',
+        415: '',
+        512: '',
+        515: ''};
+
+
+    for(RAStudent in RAQueue){
+
+        if(RAStudent["Reqeusted_Floor_1"] == "First") {
+            if(rooms[112] == '' ){
+                rooms[112] = RAStudent;
+            }
+        }
+        else if(RAStudent["Reqeusted_Floor_1"] == "Second") {
+            if(rooms[212] == '') {
+                rooms[212] = RAStudent;
+            }
+            else if(rooms[216)
+
+        }
+        else if(RAStudent["Reqeusted_Floor_1"] == "Third") {
+            
+        }
+        else if(RAStudent["Reqeusted_Floor_1"] == "Fourth") {
+            
+        }
+        else if(RAStudent["Reqeusted_Floor_1"] == "Fifth") {
+            
+        }
+    }
+}
