@@ -120,6 +120,17 @@ function assignToRoom(studentsArray, floorNumber) {
      // 3. If you make it through the above for loop then recall the function for every other floor
      // assignToRoom(studentArray, 1), assignToRoom(studentArray, 2), etc
      */
+    for (room in floorPlan['floor'][floorNumber]) {
+        if (room['gender'] == studentsArray[0]['Gender']) {
+            room['gender'].push(floorPlan['floor']['floorNumber'])
+            return
+        }
+        assignToRoom(studentArray, 1)
+        assignToRoom(studentArray, 2)
+        assignToRoom(studentArray, 3)
+        assignToRoom(studentArray, 4)
+        assignToRoom(studentArray, 5)
+    }
 }
 
 function determinePriority(studentArray){
