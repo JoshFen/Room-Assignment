@@ -1,0 +1,33 @@
+//Difference between male and female studenrs
+function genderBlocking()
+//Accept JSON file and find out how many more males or females there are than the other gender. With this difference we can find figure out how many rooms to change.
+
+{
+    let data = ['data\blueprint.xls'];
+    let floor1Male = []
+    let floor1Female = []
+    
+   
+
+    for (let i = 0; i < data.length; i++) {
+        data = [i]
+        if (data[i].Gender == 'Male') {
+            if (data[i].Floor_Type == 'Floor1') {
+                floor1Male.push[data[i]]
+            }
+            else {
+                floor1Female.push(data[i])
+            }
+            else {
+                if (data[i].Floor_Type == 'Floor1') {
+                    floor1Female.push(data[i])
+                }
+            }
+            else {
+                floor1Male.push(data.[i])
+            }
+            
+            }
+        }
+    }
+}
