@@ -99,29 +99,70 @@ function raRoomAssign(RAQueue) {
         512: '',
         515: ''};
 
+    unpreffered = []
 
-    for(RAStudent in RAQueue){
+    for(const RAStudent in RAQueue){
 
-        if(RAStudent["Reqeusted_Floor_1"] == "First") {
+        if(RAQueue[RAStudent]["Reqeusted_Floor_1"] == "First") {
             if(rooms[112] == '' ){
-                rooms[112] = RAStudent;
+                rooms[112] = RAQueue[RAStudent];
+            }
+            else {
+                unpreffered.push(RAQueue[RAStudent]);
             }
         }
-        else if(RAStudent["Reqeusted_Floor_1"] == "Second") {
+        else if(RAQueue[RAStudent]["Reqeusted_Floor_1"] == "Second") {
             if(rooms[212] == '') {
-                rooms[212] = RAStudent;
+                rooms[212] = RAQueue[RAStudent];
             }
-            else if(rooms[216)
+            else if(rooms[216] == '') {
+                rooms[216] = RAQueue[RAStudent];
+            }
+            else {
+                unpreffered.push(RAQueue[RAStudent]);
+            }
+        }
+        else if(RAQueue[RAStudent]["Reqeusted_Floor_1"] == "Third") {
+            if(rooms[312] == '') {
+                rooms[312] = RAQueue[RAStudent];
+            }
+            else if(rooms[315] == '') {
+                rooms[315] = RAQueue[RAStudent];
+            } 
+            else {
+                unpreffered.push(RAQueue[RAStudent]);
+            }  
+        }
+        else if(RAQueue[RAStudent]["Reqeusted_Floor_1"] == "Fourth") {
+            if(rooms[412] == '') {
+                rooms[412] = RAQueue[RAStudent];
+            }
+            else if(rooms[415] == '') {
+                rooms[415] = RAQueue[RAStudent];
+            } 
+            else {
+                unpreffered.push(RAQueue[RAStudent]);
+            } 
+        }
+        else if(RAQueue[RAStudent]["Reqeusted_Floor_1"] == "Fifth") {
+            if(rooms[512] == '') {
+                rooms[512] = RAQueue[RAStudent];
+            }
+            else if(rooms[515] == '') {
+                rooms[515] = RAQueue[RAStudent];
+            } 
+            else {
+                unpreffered.push(RRAQueue[RAStudent]);
+            }
+        }
 
+        if(unpreffered.length > 0) {
+            for(room in rooms){
+                if(rooms[room] == '') {
+                    rooms[room] = unpreferred.pop()
+                }
+            }
         }
-        else if(RAStudent["Reqeusted_Floor_1"] == "Third") {
-            
-        }
-        else if(RAStudent["Reqeusted_Floor_1"] == "Fourth") {
-            
-        }
-        else if(RAStudent["Reqeusted_Floor_1"] == "Fifth") {
-            
-        }
+        return rooms;
     }
 }
