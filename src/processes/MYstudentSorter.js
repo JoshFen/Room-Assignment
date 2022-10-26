@@ -103,7 +103,7 @@ function raRoomAssign(RAQueue) {
 
     for(const RAStudent in RAQueue){
 
-        if(RAQueue[RAStudent]["Reqeusted_Floor_1"] == "First") {
+        if(RAQueue[RAStudent]["Requested_Floor_1"] == "First") {
             if(rooms[112] == '' ){
                 rooms[112] = RAQueue[RAStudent];
             }
@@ -111,7 +111,7 @@ function raRoomAssign(RAQueue) {
                 unpreffered.push(RAQueue[RAStudent]);
             }
         }
-        else if(RAQueue[RAStudent]["Reqeusted_Floor_1"] == "Second") {
+        else if(RAQueue[RAStudent]["Requested_Floor_1"] == "Second") {
             if(rooms[212] == '') {
                 rooms[212] = RAQueue[RAStudent];
             }
@@ -122,7 +122,7 @@ function raRoomAssign(RAQueue) {
                 unpreffered.push(RAQueue[RAStudent]);
             }
         }
-        else if(RAQueue[RAStudent]["Reqeusted_Floor_1"] == "Third") {
+        else if(RAQueue[RAStudent]["Requested_Floor_1"] == "Third") {
             if(rooms[312] == '') {
                 rooms[312] = RAQueue[RAStudent];
             }
@@ -133,7 +133,7 @@ function raRoomAssign(RAQueue) {
                 unpreffered.push(RAQueue[RAStudent]);
             }  
         }
-        else if(RAQueue[RAStudent]["Reqeusted_Floor_1"] == "Fourth") {
+        else if(RAQueue[RAStudent]["Requested_Floor_1"] == "Fourth") {
             if(rooms[412] == '') {
                 rooms[412] = RAQueue[RAStudent];
             }
@@ -144,7 +144,7 @@ function raRoomAssign(RAQueue) {
                 unpreffered.push(RAQueue[RAStudent]);
             } 
         }
-        else if(RAQueue[RAStudent]["Reqeusted_Floor_1"] == "Fifth") {
+        else if(RAQueue[RAStudent]["Requested_Floor_1"] == "Fifth") {
             if(rooms[512] == '') {
                 rooms[512] = RAQueue[RAStudent];
             }
