@@ -39,12 +39,12 @@ function differenceofGender(floorplanJSON, totalMale, totalFemale)
             diff = totalMale - totalFemale // Calculate the difference between male over females
             return true
         }
-        else  (totalFemale > totalMale)
+        else if  (totalFemale > totalMale)
         {
             diff = totalFemale - totalMale // Calculate the difference between females over males 
             return true
         }
-
-        return false //if there is the same amount of females and males
+        
+        return false //if there is the same amount of females and males in each floor 
 
     }
