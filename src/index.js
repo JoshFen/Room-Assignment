@@ -55,12 +55,9 @@ const createWindow = () => {
     const queuesLM = determinePriority(lM);
     const queuesLF = determinePriority(lF);
     
-    // LLCInfo is user submitted data containing number of LLCs, their names, and their floor
-    const LLCInfo = [];
-    
-    //LLCBlocking(LLCInfo, floorPlan, queuesUM['LLCs'], queuesUF['LLCs'], queuesLM['LLCs'], queuesLF['LLCs']);
-    
-    const bp = JSON.stringify(queuesLM)
+    console.log(Object.keys(lF).length, queuesLF['ra'].length, queuesLF['roommate'].length, queuesLF['LLCs']['LLC FirstGen'].length, queuesLF['LLCs']['LLC Global Village'].length, queuesLF['floors']['f1'].length, queuesLF['floors']['f2'].length, queuesLF['floors']['f3'].length, queuesLF['floors']['f4'].length, queuesLF['floors']['f5'].length, queuesLF['noPref'].length, queuesLF['extras'].length)
+    console.log(queuesLF['extras']);
+    const bp = JSON.stringify(queuesLF)
         fs.writeFile("output.json", bp, err => {
             if(err){
                 throw err;

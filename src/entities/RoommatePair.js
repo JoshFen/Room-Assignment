@@ -1,4 +1,4 @@
-class TenantPair {
+class RoommatePair {
 
     constructor(firstStudent, secondStudent) {
         this.firstStudent = firstStudent;
@@ -14,4 +14,4 @@ class TenantPair {
     }
 }
 
-module.exports = TenantPair;
+module.exports = RoommatePair;
