@@ -1,3 +1,4 @@
+
 function determinePriority(studentArray){
 
     let roommateQueue = [] // Queue for students with roommate priority.
@@ -87,7 +88,7 @@ function locationPriority(locationQueue) {
 } // End of locationPriority function.
 
 
-function raRoomAssign(RAQueue) {
+function raRoomAssign(blueprint, RAQueue) {
     rooms = {
         112: '',
         212: '',
@@ -104,7 +105,8 @@ function raRoomAssign(RAQueue) {
     for(const RAStudent in RAQueue){
 
         if(RAQueue[RAStudent]["Requested_Floor_1"] == "First") {
-            if(rooms[112] == '' ){
+            if(blueprint["floor"]["1"]["room"]["112"] == '' ){
+                blueprint["floor"]["1"]["room"]["112"]  = RAQueue[RAStudent];
                 rooms[112] = RAQueue[RAStudent];
             }
             else {
@@ -112,10 +114,12 @@ function raRoomAssign(RAQueue) {
             }
         }
         else if(RAQueue[RAStudent]["Requested_Floor_1"] == "Second") {
-            if(rooms[212] == '') {
+            if(blueprint["floor"]["2"]["room"]["212"]  == '') {
+                blueprint["floor"]["2"]["room"]["212"] = RAQueue[RAStudent];
                 rooms[212] = RAQueue[RAStudent];
             }
-            else if(rooms[216] == '') {
+            else if(blueprint["floor"]["2"]["room"]["216"] == '') {
+                blueprint["floor"]["2"]["room"]["216"] = RAQueue[RAStudent];
                 rooms[216] = RAQueue[RAStudent];
             }
             else {
@@ -123,10 +127,12 @@ function raRoomAssign(RAQueue) {
             }
         }
         else if(RAQueue[RAStudent]["Requested_Floor_1"] == "Third") {
-            if(rooms[312] == '') {
+            if(blueprint["floor"]["3"]["room"]["312"] == '') {
+                blueprint["floor"]["3"]["room"]["312"] = RAQueue[RAStudent];
                 rooms[312] = RAQueue[RAStudent];
             }
-            else if(rooms[315] == '') {
+            else if(blueprint["floor"]["3"]["room"]["315"] == '') {
+                blueprint["floor"]["3"]["room"]["315"] = RAQueue[RAStudent];
                 rooms[315] = RAQueue[RAStudent];
             } 
             else {
@@ -134,10 +140,12 @@ function raRoomAssign(RAQueue) {
             }  
         }
         else if(RAQueue[RAStudent]["Requested_Floor_1"] == "Fourth") {
-            if(rooms[412] == '') {
+            if(blueprint["floor"]["4"]["room"]["412"] == '') {
+                blueprint["floor"]["4"]["room"]["412"] = RAQueue[RAStudent];
                 rooms[412] = RAQueue[RAStudent];
             }
-            else if(rooms[415] == '') {
+            else if(blueprint["floor"]["4"]["room"]["415"] == '') {
+                blueprint["floor"]["4"]["room"]["415"] = RAQueue[RAStudent];
                 rooms[415] = RAQueue[RAStudent];
             } 
             else {
@@ -145,10 +153,12 @@ function raRoomAssign(RAQueue) {
             } 
         }
         else if(RAQueue[RAStudent]["Requested_Floor_1"] == "Fifth") {
-            if(rooms[512] == '') {
+            if(blueprint["floor"]["5"]["room"]["512"] == '') {
+                blueprint["floor"]["5"]["room"]["512"] = RAQueue[RAStudent];
                 rooms[512] = RAQueue[RAStudent];
             }
-            else if(rooms[515] == '') {
+            else if(blueprint["floor"]["5"]["room"]["515"] == '') {
+                blueprint["floor"]["5"]["room"]["515"] = RAQueue[RAStudent];
                 rooms[515] = RAQueue[RAStudent];
             } 
             else {
@@ -159,10 +169,13 @@ function raRoomAssign(RAQueue) {
         if(unpreffered.length > 0) {
             for(room in rooms){
                 if(rooms[room] == '') {
+                    fNum = Math.floor(room / 100);
                     rooms[room] = unpreferred.pop()
+                    blueprint["floor"][fNum]["room"][room] = RAQueue[RAStudent];
+
                 }
             }
         }
-        return rooms;
+        return blueprint;
     }
 }
