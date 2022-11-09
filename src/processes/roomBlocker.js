@@ -105,6 +105,14 @@ function totalStudentsForEachLLC(uM, uF, lM, lF) {
     return LLCTotalStudents; 
 }
 
+function totalStudentsForEachFloor(uM, uF, lF, lM) {
+    let floorNumberTotalStudents = {};
+    for (Floor of uF) {
+        FloorNumberTotalStudents[Floor] = uF[Floor].length + uM[Floor].length + lF[Floor].length + lM[Floor].length;
+    }
+    return floorNumberTotalStudents;
+}  
+
 module.exports = {
     LLCBlocking
   };

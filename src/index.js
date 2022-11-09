@@ -9,6 +9,7 @@ const { download } = require('electron-dl');
 const { genderSort, determinePriority } = require('./processes/studentSorter');
 const fs = require('fs');
 const { readExcel } = require('./processes/fileReader');
+const { LLCBlocking } = require('./processes/roomBlocker');
 
 /* 
  * Creates the display window with the assigned dimensions
@@ -47,18 +48,22 @@ const createWindow = () => {
    * function body
    */ 
   ipcMain.handle('uploadFile', (channel, data) => {
-    console.log(data);
+
     const [uM, lM, uF, lF] = genderSort(data);
-    console.log(Object.keys(lF).length);
-    const queuesUM = determinePriority(lF);
+    const queuesUM = determinePriority(uM);
+    const queuesUF = determinePriority(uF);
+    const queuesLM = determinePriority(lM);
+    const queuesLF = determinePriority(lF);
     
-    console.log(queuesUM['ra'].length, queuesUM['roommate'].length, queuesUM['LLC1'].length, queuesUM['LLC2'].length, queuesUM['f1'].length, queuesUM['f2'].length, queuesUM['f3'].length, queuesUM['f4'].length, queuesUM['f5'].length, queuesUM['noPref'].length)
-    const input = JSON.stringify(queuesUM);
-    fs.writeFile("sampleoutout.json", input, err => {
-      if(err){
-          throw err;
-      }
-    })// End of fs.writeFile function.
+    console.log(Object.keys(lF).length, queuesLF['ra'].length, queuesLF['roommate'].length, queuesLF['LLCs']['LLC FirstGen'].length, queuesLF['LLCs']['LLC Global Village'].length, queuesLF['floors']['f1'].length, queuesLF['floors']['f2'].length, queuesLF['floors']['f3'].length, queuesLF['floors']['f4'].length, queuesLF['floors']['f5'].length, queuesLF['noPref'].length, queuesLF['extras'].length)
+    console.log(queuesLF['extras']);
+    const bp = JSON.stringify(queuesLF)
+        fs.writeFile("output.json", bp, err => {
+            if(err){
+                throw err;
+            }
+            console.log("Blueprint successfully created.")
+        })// End of fs.writeFile function.
     let win = new BrowserWindow({width: 800, height: 600});
     win.loadFile('src/postprocess.html');
   })
