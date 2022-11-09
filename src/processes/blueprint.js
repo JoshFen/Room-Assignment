@@ -53,7 +53,8 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
                 "roomSize": roomSize,
                 "RARoom" : ra,
                 "LLC": false,
-                "sex": ""
+                "sex": "",
+                "roommates": []
             }
         }
         // Check if the object is from the second floor.
@@ -65,7 +66,8 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
                 "roomSize": roomSize,
                 "RARoom" : ra,
                 "LLC": false,
-                "sex": ""
+                "sex": "",
+                "roommates": []
             }
         }
         // Check if the object is from the third floor.
@@ -77,7 +79,8 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
                 "roomSize": roomSize,
                 "RARoom" : ra,
                 "LLC": false,
-                "sex": ""
+                "sex": "",
+                "roommates": []
             }
         }
         // Check if the object is from the fourth floor.
@@ -89,7 +92,8 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
                 "roomSize": roomSize,
                 "RARoom" : ra,
                 "LLC": false,
-                "sex": ""
+                "sex": "",
+                "roommates": []
             }
         }
         // Check if the object is from the fifth floor.
@@ -101,7 +105,8 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
                 "roomSize": roomSize,
                 "RARoom" : ra,
                 "LLC": false,
-                "sex": ""
+                "sex": "",
+                "roommates": []
             }
         }
     } // End of for loop.
