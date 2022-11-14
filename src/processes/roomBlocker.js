@@ -1,3 +1,5 @@
+const fs = require('fs'); 
+
 function isValidLLCQueue(studentPairs, LLCName) {
     return studentPairs["LLCs"] != undefined && studentPairs["LLCs"][LLCName] != undefined && studentPairs["LLCs"][LLCName].length > 0;
 }
@@ -9,23 +11,19 @@ function LLCBlocking(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, lower
     // 2. If a list is exhausted fill with remaining groups
 
     for(const LLCName in LLCInfo) { // Iterate for each LLC from user input.
-        let floorNum = LLCInfo[LLCName]; // Assuming LLC info is obj like: "LLCName": "Floor Number"
-        console.log(lowerFemalePairs['LLCs'][LLCName].length)
-        console.log(lowerFemalePairs['LLCs'][LLCName].pop())
-        console.log(lowerFemalePairs['LLCs'][LLCName].length)
+        let floorNum = LLCInfo[LLCName]; // Assuming LLC info is obj 
         for(const room in blueprint["floor"][floorNum]["rooms"]) { // Iterates for each room on the floor given for current LLC.
             if( blueprint["floor"][floorNum]["rooms"][room]["roommates"].length < 1) { // Checks if the room has students already (RA assignment).
                 let counter = 1;
-                roomies = [] // Each array will hold the roommates to fill an entire room.
-                roomSize = blueprint["floor"][floorNum]["rooms"][room]["size"]; // Retrieves the room size for current room.
-                while(isValidLLCQueue(upperMalePairs, LLCName)) {
+                let roomies = [] // Each array will hold the roommates to fill an entire room.
+                let roomSize = blueprint["floor"][floorNum]["rooms"][room]["roomSize"]; // Retrieves the room roomSize for current room.
+                if(isValidLLCQueue(upperMalePairs, LLCName) || isValidLLCQueue(upperFemalePairs, LLCName) || isValidLLCQueue(lowerMalePairs, LLCName) || isValidLLCQueue(lowerFemalePairs, LLCName)) {
                     for(let i = 0; i < (roomSize / 2); i++) { // Iterates for each room spot to add students as pairs.
                         // use counter to decide which student group to operate on.
                         let unassigned = true;
                         while(unassigned) {// NEEDS TO STOP WHEN LISTS ARE EMPTY
                             if(counter % 4 == 0) {
                                 if(isValidLLCQueue(lowerFemalePairs, LLCName)) {
-                                    //ASSIGN POPO TENANT
                                     roomies.push(lowerFemalePairs["LLCs"][LLCName].pop());
                                     unassigned = false;
                                 }
@@ -93,13 +91,21 @@ function LLCBlocking(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, lower
                                 }  
                             }
                         } // End of while loop.
-                        blueprint[floor]["rooms"][room]["roommates"] = roomies;
-                    } // End of room size for loop.
+                    } // End of room roomSize for loop.
+                    blueprint["floor"][floorNum]["rooms"][room]["roommates"] = roomies;
+                    counter += 1;
                 } // End of if to check if roommates have been assigned.
-            } // End of student check while loop.
-            counter += 1; 
+
+            } // End of student check while loop. 
         } // End of rooms for loop.
     } // End of LLC for loop.
+    const bp = JSON.stringify(blueprint)
+      fs.writeFile("outputd.json", bp, err => {
+          if(err){
+            console.log(err)
+              throw err;
+          }
+      })// End of fs.writeFile function.
     return blueprint // Returns edited floorplan with rooms assigned.
 } // End of LLCBlocking function.
 

@@ -23,8 +23,8 @@ if (currentPage == 'index.html') {
         * we trigger the isLoading() function defined below.
         */ 
         window.api.uploadFile(filePath);
-        //const response = await window.api.uploadFile(filePath);
-        changePage(e, 'views/preprocess.html');
+        window.api.runAssignment();
+        //changePage(e, 'views/preprocess.html');
     }
 
     // Simply displays a loading UI element while our file is being processed.

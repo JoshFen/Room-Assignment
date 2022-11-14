@@ -11,7 +11,6 @@ function raRoomAssign(blueprint, RAQueue) {
         512: '',
         515: ''
     };
-
     let noPref = []
 
     for(const RAStudent of RAQueue) {
@@ -87,7 +86,7 @@ function raRoomAssign(blueprint, RAQueue) {
             if(rooms[room] == '') {
                 fNum = Math.floor(room / 100);
                 rooms[room] = noPref.pop()
-                blueprint["floor"][fNum]["rooms"][room] = noPref[index];
+                blueprint["floor"][fNum]["rooms"][room]["roommates"].push(rooms[room]);
                 index++;
             }
         }

@@ -69,13 +69,13 @@ const createWindow = () => {
 
   ipcMain.handle('runAssignment', (channel, data) => {
 
-    const [uM, lM, uF, lF] = genderSort(data);
+    const [uM, lM, uF, lF] = genderSort(store.get('file'));
     const queuesUM = determinePriority(uM);
     const queuesUF = determinePriority(uF);
     const queuesLM = determinePriority(lM);
     const queuesLF = determinePriority(lF);
     
-    console.log(Object.keys(lF).length, queuesLF['ra'].length, queuesLF['roommate'].length, queuesLF['LLCs']['LLC FirstGen'].length, queuesLF['LLCs']['LLC Global Village'].length, queuesLF['floors']['f1'].length, queuesLF['floors']['f2'].length, queuesLF['floors']['f3'].length, queuesLF['floors']['f4'].length, queuesLF['floors']['f5'].length, queuesLF['noPref'].length, queuesLF['extras'].length)
+    //console.log(Object.keys(lF).length, queuesLF['ra'].length, queuesLF['roommate'].length, queuesLF['LLCs']['LLC FirstGen'].length, queuesLF['LLCs']['LLC Global Village'].length, queuesLF['floors']['f1'].length, queuesLF['floors']['f2'].length, queuesLF['floors']['f3'].length, queuesLF['floors']['f4'].length, queuesLF['floors']['f5'].length, queuesLF['noPref'].length, queuesLF['extras'].length)
     
     fs.readFile(join(__dirname, "../data/blueprint.json"), 'utf8', (err, jsonString) => {
       if (err) {
@@ -84,18 +84,20 @@ const createWindow = () => {
       }
       let blueprintCopy = JSON.parse(jsonString);
       blueprintCopy = raRoomAssign(blueprintCopy, queuesUF['ra'].concat(queuesUM['ra']))
-      blueprintCopy = LLCBlocking({"LLC FirstGen" : 2, "LLC Global Village": 3}, blueprintCopy, queuesUM, queuesUF, queuesLM, queuesLF);
+
+      blueprintCopy = LLCBlocking({"LLC FirstGen" : 2, "LLC Global Village": 2}, blueprintCopy, queuesUM, queuesUF, queuesLM, queuesLF);
+      const bp = JSON.stringify(blueprintCopy)
+      fs.writeFile("output.json", bp, err => {
+          if(err){
+            console.log(err)
+              throw err;
+          }
+      })// End of fs.writeFile function.
       })
 
-    const bp = JSON.stringify(queuesUM)
-        fs.writeFile("output.json", bp, err => {
-            if(err){
-                throw err;
-            }
-            console.log("Blueprint successfully created.")
-        })// End of fs.writeFile function.
-    let win = new BrowserWindow({width: 800, height: 600});
-    win.loadFile('src/postprocess.html');
+    
+    //let win = new BrowserWindow({width: 800, height: 600});
+    //win.loadFile('src/postprocess.html');
 
   })
 
