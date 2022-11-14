@@ -2,6 +2,7 @@ const fs = require('fs')
 
 function createBlueprint(floorplanJSON){ // Function to create blueprint from stored floorplan.json.
 
+    // Reads in passed JSON file and creates JSON string.
     fs.readFile(floorplanJSON, 'utf8', (err, jsonString) => {
         if (err) {
             console.log("File read failed:", err)
@@ -13,36 +14,24 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
     let blueprint = {
         floor: {
             1:{
-                rooms: {
-
-                }
+                rooms: {}
             },
             2:{
-                rooms: {
-                
-                }
+                rooms: {}
             },
             3:{
-                rooms: {
-                
-                }
+                rooms: {}
             },
             4:{
-                rooms: {
-                
-                }
+                rooms: {}
             },
             5:{
-                rooms: {
-                
-                }
+                rooms: {}
             },
-        
         }
-
     }
-    // Iterate for each object in floorplan.json.
 
+    // Iterate for each object in floorplan.json.
     for(var i = 0; i < data.length; i++){ 
         // Check if the object is from the first floor.
         if(data[i]["roomNumber"] < 200){
@@ -110,6 +99,7 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
             }
         }
     } // End of for loop.
+
         // Stringify JSON and create file for storage on app.
         const bp = JSON.stringify(blueprint)
         fs.writeFile("blueprint.json", bp, err => {
@@ -118,28 +108,10 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
             }
             console.log("Blueprint successfuly created.")
         })// End of fs.writeFile function.
-    console.log(blueprint.length)
 
     }) // End of fs.readfile function. (Moved to widen scope of jsonString to be called in for loop)
 
 } // End of createBlueprint function.
-
-function genderBlocking(floorplanJSON, totalMale, totalFemale) {
-    fs.readFile(floorplanJSON, 'utf8', (err, jsonString) => {
-        if (err) {
-            console.log("File read failed:", err);
-            return;
-        }
-    
-        let floorplan = JSON.parse(jsonString);
-    })
-    // 1. Find the difference in the # of males vs. # of female
-    // ex. if (totalMale > totalFemale) diff = totalMale - totalFemale
-
-    //2. Using the difference, figure out how many rooms needs to be changed;
-    // assume that half the rooms are male and half the rooms are female to start
-    // ex. if 12 students then 2 rooms of 6 should be changed or if 7 then 2 rooms of 4
-}
 
 function isRARoom(roomNum, floor) {
     if(roomNum % 100 == 12) { // Every floor has an RA room at _12.
@@ -156,7 +128,7 @@ function isRARoom(roomNum, floor) {
         }
     }
     return false // This room is not an RA room.
-}
+} // End of isRARoom function.
 
 function getRoomSize(jsonRoomSize) {
     if(jsonRoomSize == "2BD") {
@@ -172,19 +144,9 @@ function getRoomSize(jsonRoomSize) {
         return 1
     }
     return 0;
-}
+} // End of getRoomSizse function.
 
-
-function createRooms(blueprintJSON) {
-    let rooms = []
-    for(floor in blueprintJSON["floor"]){
-        for(room in floor['rooms']){
-            let newRoom =  new Room(room, floor, room["roomSize"], room["LLC"], room["RARoom"], room["sex"] )
-            rooms.push(newRoom)
-        }
-    }
-}
-//---------------------------------Exports---------------------------------
+///////////////////////////////////// Exports. /////////////////////////////////////
 module.exports = {
     createBlueprint
 }
