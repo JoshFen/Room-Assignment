@@ -1,30 +1,36 @@
+function isValidLLCQueue(studentPairs, LLCName) {
+    return studentPairs["LLCs"] != undefined && studentPairs["LLCs"][LLCName] != undefined && studentPairs["LLCs"][LLCName].length > 0;
+}
+
 function LLCBlocking(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, lowerMalePairs, lowerFemalePairs) {
     // 1. Iterate for each LLCInfo key
     //      a. Check floor and access floorplan[key]
     //      b. Iterate for each person in each list ex. upperMale[key] and fill a room with that group
     // 2. If a list is exhausted fill with remaining groups
 
-    for(LLCName in LLCInfo) { // Iterate for each LLC from user input.
+    for(const LLCName in LLCInfo) { // Iterate for each LLC from user input.
         let floorNum = LLCInfo[LLCName]; // Assuming LLC info is obj like: "LLCName": "Floor Number"
-
-        for(room in blueprint[floorNum]["rooms"]) { // Iterates for each room on the floor given for current LLC.
-            if( blueprint[floorNum]["roommates"].length < 1) { // Checks if the room has students already (RA assignment).
+        console.log(lowerFemalePairs['LLCs'][LLCName].length)
+        console.log(lowerFemalePairs['LLCs'][LLCName].pop())
+        console.log(lowerFemalePairs['LLCs'][LLCName].length)
+        for(const room in blueprint["floor"][floorNum]["rooms"]) { // Iterates for each room on the floor given for current LLC.
+            if( blueprint["floor"][floorNum]["rooms"][room]["roommates"].length < 1) { // Checks if the room has students already (RA assignment).
                 let counter = 1;
-                roomies = [] // Each array will hold the roomates to fill an entire room.
-                roomSize = blueprint[floor]["rooms"][room]["size"]; // Retrieves the room size for current room.
-                while(upperMalePairs["LLC"][LLCName].length > 0 || upperFemalePairs["LLC"][LLCName].length > 0 || lowerMalePairs[LLCName]["LLC"].length > 0 || lowerFemalePairs[LLCName]["LLC"].length > 0 ) {
+                roomies = [] // Each array will hold the roommates to fill an entire room.
+                roomSize = blueprint["floor"][floorNum]["rooms"][room]["size"]; // Retrieves the room size for current room.
+                while(isValidLLCQueue(upperMalePairs, LLCName)) {
                     for(let i = 0; i < (roomSize / 2); i++) { // Iterates for each room spot to add students as pairs.
                         // use counter to decide which student group to operate on.
                         let unassigned = true;
                         while(unassigned) {// NEEDS TO STOP WHEN LISTS ARE EMPTY
                             if(counter % 4 == 0) {
-                                if(lowerFemalePairs["LLC"][LLCName] > 0) {
+                                if(isValidLLCQueue(lowerFemalePairs, LLCName)) {
                                     //ASSIGN POPO TENANT
-                                    roomies.push(lowerFemalePairs["LLC"][LLCName].pop());
+                                    roomies.push(lowerFemalePairs["LLCs"][LLCName].pop());
                                     unassigned = false;
                                 }
                                 else if(i > 0) {
-                                    if(upperFemalePairs["LLC"][LLCName].length > 0) {
+                                    if(isValidLLCQueue(upperFemalePairs, LLCName)) {
                                         counter += 2;
                                     }
                                     else {
@@ -36,12 +42,12 @@ function LLCBlocking(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, lower
                                 }
                             }
                             else if(counter % 3 == 0) {
-                                if(lowerMalePairs["LLC"][LLCName].length > 0) {
-                                    roomies.push(lowerMalePairs["LLC"][LLCName].pop());
+                                if(isValidLLCQueue(lowerMalePairs, LLCName)) {
+                                    roomies.push(lowerMalePairs["LLCs"][LLCName].pop());
                                     unassigned = false;
                                 }
                                 else if(i > 0) {
-                                    if(upperMalePairs["LLC"][LLCName].length > 0) {
+                                    if(isValidLLCQueue(upperMalePairs, LLCName)) {
                                         counter += 2;
                                     }
                                     else {
@@ -53,12 +59,12 @@ function LLCBlocking(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, lower
                                 }
                             }
                             else if(counter % 2 == 0) {
-                                if(upperFemalePairs["LLC"][LLCName] > 0) {
-                                    roomies.push(upperFemalePairs["LLC"][LLCName].pop());
+                                if(isValidLLCQueue(upperFemalePairs, LLCName)) {
+                                    roomies.push(upperFemalePairs["LLCs"][LLCName].pop());
                                     unassigned = false;
                                 }
                                 else if(i > 0) {
-                                    if(lowerFemalePairs["LLC"][LLCName].length > 0) {
+                                    if(isValidLLCQueue(lowerFemalePairs, LLCName)) {
                                         counter += 2;
                                     }
                                     else {
@@ -70,12 +76,12 @@ function LLCBlocking(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, lower
                                 }
                             }
                             else {
-                                if(upperMalePairs[LLCName].length > 0) {
+                                if(isValidLLCQueue(upperMalePairs, LLCName)) {
                                     roomies.push(upperMalePairs[LLCName].pop());
                                     unassigned = false;
                                 }
                                 else if(i > 0) {
-                                    if(lowerMalePairs[LLCName].length > 0) {
+                                    if(isValidLLCQueue(lowerMalePairs, LLCName)) {
                                         counter += 2; // Goes to lower male.
                                     }
                                     else{ 
@@ -88,7 +94,7 @@ function LLCBlocking(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, lower
                             }
                         } // End of while loop.
                         blueprint[floor]["rooms"][room]["roommates"] = roomies;
-                    } // End of roomsize for loop.
+                    } // End of room size for loop.
                 } // End of if to check if roommates have been assigned.
             } // End of student check while loop.
             counter += 1; 

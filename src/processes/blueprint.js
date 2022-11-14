@@ -3,10 +3,10 @@ const fs = require('fs')
 function createBlueprint(floorplanJSON){ // Function to create blueprint from stored floorplan.json.
 
     fs.readFile(floorplanJSON, 'utf8', (err, jsonString) => {
-    if (err) {
-        console.log("File read failed:", err)
-        return
-    }
+        if (err) {
+            console.log("File read failed:", err)
+            return
+        }
 
     let data = JSON.parse(jsonString)
     // Create empty blueprint JSON for simulating LionsGate.

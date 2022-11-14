@@ -123,7 +123,7 @@ function doRoommatesBelongInLLC(roommatesArray) {
     let pairsToLLC = []
     let pairsNotToLLC = []
     for (const roommatePair of roommatesArray) {
-        if (roommatePair["firstStudent"]["Requested_LLC_1"] === roommatePair["secondStudent"]["Requested_LLC_!1"]) {
+        if (roommatePair["firstStudent"]["Requested_LLC_1"] === roommatePair["secondStudent"]["Requested_LLC_1"] && roommatePair["firstStudent"]["Requested_LLC_1"] != "") {
             pairsToLLC.push(roommatePair);
         }
         else {
@@ -135,7 +135,7 @@ function doRoommatesBelongInLLC(roommatesArray) {
 
 function putRoommatesInLLC(roommates, LLCs) {
     for (const roommatePair of roommates) {
-        LLCs[roommatePair["firstStudent"]["Requested_LLC_1"]].push(roommatePair);
+        LLCs[roommatePair["firstStudent"]["Requested_LLC_1"]] = [roommatePair].concat(LLCs[roommatePair["firstStudent"]["Requested_LLC_1"]]);
     }
     return LLCs;
 }

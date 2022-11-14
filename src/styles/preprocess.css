@@ -1,0 +1,81 @@
+#LLCInfoContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.LLCInput { 
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+}
+
+.LLCNameInput { 
+    height: 30px;
+}
+
+.LLCInput input {
+    padding: .45rem .65rem;
+}
+
+.LLCInput input:focus, select:focus {
+    background-color: #e6e6e6;
+}
+
+.LLCNameInput::placeholder {
+    color: transparent;
+}
+
+.inputContainer {
+    position: relative;
+}
+
+.LLCInput input:focus + .LLCInputLabel,
+input:not(:placeholder-shown) + .LLCInputLabel {
+    top: 20%;
+    font-size: .6rem;
+}
+
+.LLCInputLabel { 
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    font-size: .8rem;
+    transition: top 250ms ease-in-out, font-size 250ms ease-in-out;
+    pointer-events: none;
+}
+
+select {
+    height: 100%;
+    width: 70px;
+    padding-top: 10px;
+    padding-left: 25%;
+    outline: none;
+}
+
+select + .LLCInputLabel {
+    font-size: .6rem;
+    top: 5px;
+    width: 100%;
+    left: 0;
+    transform: none;
+    margin-top: .01rem;
+}
+
+.newLLC {
+    width: fit-content;
+    font-weight: 700;
+    text-align: left;
+    color: var(--psu-blue);
+    margin: 0 0 .25em 0;
+    padding: 0 .25em 0 .25em;
+    position: relative;
+    top: -1rem;
+    right: 50%;
+    background-color: white;
+}
+
+.box {
+    margin: .5em;
+    padding: .5em;
+}

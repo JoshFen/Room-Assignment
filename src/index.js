@@ -4,12 +4,18 @@
  * is used to communicate with the ipcRenderer.
  */ 
 const { app, BrowserWindow, ipcMain } = require('electron');
+const Store = require('electron-store');
+const { download } = require('electron-dl');
 const { join } = require('path');
-const { download } = require('electron-dl'); 
+const fs = require('fs'); 
 const { genderSort, determinePriority } = require('./processes/studentSorter');
-const fs = require('fs');
 const { readExcel } = require('./processes/fileReader');
 const { LLCBlocking } = require('./processes/roomBlocker');
+const { raRoomAssign } = require('./processes/MYstudentSorter');
+
+
+// Creates store for storing user data
+const store = new Store();
 
 /* 
  * Creates the display window with the assigned dimensions
@@ -20,14 +26,18 @@ const createWindow = () => {
     const win = new BrowserWindow({
       width: 800,
       height: 600,
+      minWidth: 800,
+      minHeight: 600,
       frame: true,
       resizable: false,
       icon: join(__dirname, '../assets/psulogo.ico'),
       webPreferences: {
         preload: join(__dirname, 'preload.js'),
+        devTools: true,
         sandbox: false
       }
     })
+
     // Loads the given html file into the display window
     win.loadFile('src/index.html');
   }
@@ -47,7 +57,17 @@ const createWindow = () => {
    * is processed here. We trigger the room assignment within this 
    * function body
    */ 
-  ipcMain.handle('uploadFile', (channel, data) => {
+  ipcMain.on('uploadFile', (channel, data) => {
+    store.set('file', data);
+    console.log(store.get('file'))
+  })
+
+  ipcMain.on('sendLLCInfo', (channel, data) => {
+    store.set('LLCInfo', data);
+    console.log(store.get('LLCInfo'))
+  })
+
+  ipcMain.handle('runAssignment', (channel, data) => {
 
     const [uM, lM, uF, lF] = genderSort(data);
     const queuesUM = determinePriority(uM);
@@ -56,8 +76,18 @@ const createWindow = () => {
     const queuesLF = determinePriority(lF);
     
     console.log(Object.keys(lF).length, queuesLF['ra'].length, queuesLF['roommate'].length, queuesLF['LLCs']['LLC FirstGen'].length, queuesLF['LLCs']['LLC Global Village'].length, queuesLF['floors']['f1'].length, queuesLF['floors']['f2'].length, queuesLF['floors']['f3'].length, queuesLF['floors']['f4'].length, queuesLF['floors']['f5'].length, queuesLF['noPref'].length, queuesLF['extras'].length)
-    console.log(queuesLF['extras']);
-    const bp = JSON.stringify(queuesLF)
+    
+    fs.readFile(join(__dirname, "../data/blueprint.json"), 'utf8', (err, jsonString) => {
+      if (err) {
+          console.log("File read failed:", err)
+          return
+      }
+      let blueprintCopy = JSON.parse(jsonString);
+      blueprintCopy = raRoomAssign(blueprintCopy, queuesUF['ra'].concat(queuesUM['ra']))
+      blueprintCopy = LLCBlocking({"LLC FirstGen" : 2, "LLC Global Village": 3}, blueprintCopy, queuesUM, queuesUF, queuesLM, queuesLF);
+      })
+
+    const bp = JSON.stringify(queuesUM)
         fs.writeFile("output.json", bp, err => {
             if(err){
                 throw err;
@@ -66,6 +96,7 @@ const createWindow = () => {
         })// End of fs.writeFile function.
     let win = new BrowserWindow({width: 800, height: 600});
     win.loadFile('src/postprocess.html');
+
   })
 
   /*

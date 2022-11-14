@@ -1,17 +1,20 @@
 const currentPage = window.location.pathname.split('/').slice(-1);
 
-if (currentPage == 'index.html') {  
+function changePage(e, url) {
+    e.preventDefault();
+    window.location.href = url;
+}
 
+if (currentPage == 'index.html') {  
     const fileInput = document.getElementById('fileInput');
     const dragAndDropInput = document.getElementById("dragAndDrop");
     let dropArea = document.getElementById('dragAndDrop');
     const chosenFileText = document.getElementById('chosenFileText');
     const menuButton = document.getElementById('menuIcon');
     const INVALID_FILE_STRING = 'File must be an Excel sheet (.xls)';
-
-
+    
     // On submit listener for the form that contains the file input
-    document.getElementById('excelSheetForm').onsubmit = async () => {
+    document.getElementById('excelSheetForm').onsubmit = (e) => {
         // filePath variable holds the path to the excel file
         filePath = fileInput.files[0].path;
         /* We send the file path from this renderer-process to the backend
@@ -19,7 +22,9 @@ if (currentPage == 'index.html') {
         * channel in preload.js. We await the response, and when we get it
         * we trigger the isLoading() function defined below.
         */ 
-        const response = await window.api.uploadFile(filePath);
+        window.api.uploadFile(filePath);
+        //const response = await window.api.uploadFile(filePath);
+        changePage(e, 'views/preprocess.html');
     }
 
     // Simply displays a loading UI element while our file is being processed.
@@ -82,6 +87,29 @@ if (currentPage == 'index.html') {
         else {
             chosenFileText.style.color = 'var(--danger)';
         }
+    }
+}
+
+
+if (currentPage == 'preprocess.html') {
+    const LLCForm = document.getElementById('LLCForm');
+    LLCForm.onsubmit = (e) => {
+        e.preventDefault();
+        const formData = new FormData(LLCForm).entries();
+        let data = {};
+        let counter = 0;
+        do {
+            const LLCName = formData.next().value[1];
+            const LLCFloor = formData.next().value[1];
+            if (LLCName !== "") {
+                data[LLCName] = LLCFloor;
+            }
+            counter++;
+        }
+        while (counter < 3);
+
+        window.api.sendLLCInfo(e);
+        changePage(e, 'postprocess.html');
     }
 }
 

@@ -50,7 +50,7 @@ body {
     width: 110px;
     height: 55px;
     font-size: large;
-    border-radius: 8%;
+    border-radius: .3rem;
     border: none;
 }
 
@@ -60,7 +60,6 @@ body {
 
 form {
     text-align: -webkit-center;
-    padding-top: 4%;
 }
 
 #dragAndDrop {
@@ -114,7 +113,7 @@ span {
     border-radius: 2px;
 }
 
-#formSubmitButton {
+.formSubmitButton {
     margin-top: 20px;
 }
 
@@ -123,80 +122,12 @@ span {
     justify-content: space-between;
     background-color: var(--psu-blue-light);
     padding: 4px;
+    -webkit-app-region: drag;
 }
 
-.fileHandleButtons {
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
+.border-top {
+    border: 1px solid var(--psu-blue);
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
 }
-
-.fileHandleButtons button {
-    margin-left: 1rem;
-    margin-right: 1rem;
-}
-
-.assignmentSuccessContainer {
-    height: 200px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-#assignmentSuccessText {
-    color: var(--success);
-    align-self: center;
-}
-
-.checkmark__circle {
-    stroke-dasharray: 166;
-    stroke-dashoffset: 166;
-    stroke-width: 2;
-    stroke-miterlimit: 10;
-    stroke: var(--psu-blue);
-    fill: none;
-    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
-}
-
-.checkmark {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    display: block;
-    stroke-width: 2;
-    stroke: #fff;
-    stroke-miterlimit: 10;
-    margin: 10% auto;
-    box-shadow: inset 0px 0px 0px var(--psu-blue);
-    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
-}
-
-.checkmark__check {
-    transform-origin: 50% 50%;
-    stroke-dasharray: 48;
-    stroke-dashoffset: 48;
-    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
-}
-
-@keyframes stroke {
-    100% {
-        stroke-dashoffset: 0 
-    }
-}
-
-@keyframes scale {
-    0%, 100% {
-        transform: none
-    }
-    50% {
-        transform: scale3d(1.1, 1.1, 1)
-    }
-}
-
-@keyframes fill {
-    100% {
-        box-shadow: inset 0px 0px 0px 100px var(--psu-blue)
-    }
-}
-
-

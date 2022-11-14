@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <link rel="stylesheet" href="../index.css">
+    <link rel="stylesheet" href="../styles/preprocess.css">
+    <title>Roommate</title>
+  </head>
+  <body>
+    <div id="root">
+      <div id="container">
+        <div id="controlBar" class="controls">
+          <img id="menuIcon" width='25px' src="../../assets/menu-icon.svg">
+          <div id="windowControls">
+            <img id="minimizeIcon" width='25px' src="../../assets/minimize-icon.svg">
+            <img id="closeIcon" width='25px' src="../../assets/close-icon.svg">
+          </div>
+        </div>
+        <div id="LLCInfoContainer">
+            <form id="LLCForm">
+              <h4>Enter LLC Information</h4>
+              <div class="box border-top">
+                <h5 class="newLLC">LLC 1</h5>
+                <div class="LLCInput">
+                  <div class="inputContainer">
+                    <input class="LLCNameInput" name="LLCInputNameInput1" type="text" placeholder="LLC Name"/>
+                    <label class="LLCInputLabel" for="LLCNameInput1">LLC Name</label>
+                  </div>
+                  <div class="inputContainer">
+                      <select name="LLCInputFloorInput1" type="text" placeholder="LLC Name">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                      </select> 
+                      <label class="LLCInputLabel" for="LLCFloorNumberInput1">Floor Number</label>  
+                  </div>
+                </div>
+              </div>
+              <div class="box border-top">
+                <h5 class="newLLC">LLC 2</h5>
+                <div class="LLCInput">
+                  <div class="inputContainer">
+                    <input class="LLCNameInput" name="LLCNameInput2" type="text" placeholder="LLC Name"/>
+                    <label class="LLCInputLabel" for="LLCNameInput2">LLC Name</label>
+                  </div>
+                  <div class="inputContainer">
+                      <select name="LLCFloorNumberInput2" type="text" placeholder="LLC Name">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                      </select> 
+                      <label class="LLCInputLabel" for="LLCFloorNumberInput2">Floor Number</label>  
+                    </div>
+                  </div>
+              </div>
+              <div class="box border-top">
+                <h5 class="newLLC">LLC 3</h5>
+                <div class="LLCInput">
+                  <div class="inputContainer">
+                    <input class="LLCNameInput" name="LLCNameInput3" type="text" placeholder="LLC Name" data-change-tracking="true"/>
+                    <label class="LLCInputLabel" for="LLCNameInput3">LLC Name</label>
+                  </div>
+                  <div class="inputContainer">
+                    <select name="LLCFloorNumberInput3" type="text" placeholder="LLC Name">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select> 
+                    <label class="LLCInputLabel" for="LLCFloorNumberInput3">Floor Number</label>  
+                  </div>
+                </div>
+              </div>
+              <button id="continueButton" class="btn btn-med formSubmitButton" type="submit">Continue</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="../renderer.js"></script>
+</html>
+
