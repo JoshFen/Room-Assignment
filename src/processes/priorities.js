@@ -1,71 +1,28 @@
 
+const { PSU_ID, GROUP_TYPE_FIRST_YEAR, REQUESTED_LLC_1, ROOMMATE_1, PRIORITY, LOCATION, LLC, ROOMMATE_1_MATCH, MUTUAL_ROOMMATE, GROUP_TYPE, GROUP_TYPE_RES_LIFE, REQUESTED_FLOOR_1 } = require("../constants");
 const RoommatePair = require("../entities/RoommatePair");
-const { readExcel } = require("./fileReader");
 const fs = require('fs');
+const { pairStudents } = require("./studentPairer");
 
-function genderSort(file){
-    // Accept JSON file and separate students by gender attribute into a list of male/female students.
-    // Used both to call below functions
-    let data = readExcel(file);
-    let upperMale = {}
-    let upperFemale = {}
-    let lowerMale = {}
-    let lowerFemale = {}
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].Gender == 'M') { 
-            if (data[i].Group_Type=='First-Year') {
-                lowerMale[data[i]['PSU_ID']] = data[i];
-            }
-            else {
-                upperMale[data[i]['PSU_ID']] = data[i];
-            } 
-        }
-        else {
-            if (data[i].Group_Type == 'First-Year') { 
-                lowerFemale[data[i]['PSU_ID']] = data[i];
-            }
-            else {
-                upperFemale[data[i]['PSU_ID']] = data[i];
-            }
-        }
-    }
-    return [upperMale, lowerMale, upperFemale, lowerFemale]
-}
+function determineStudentPriority(studentArray){
+    let [raQueue, roommateQueue, LLCQueue, locationQueue, noPrefQueue]   = [[], [], [], [], []];
 
-function pairStudents(queue) {
-    let extraPerson;
-    if ((queue.length % 2) != 0) {
-        extraPerson = queue.pop();
-    }
-    let pairs = [];
-    for (let index = 0; index < queue.length; index += 2) { 
-        pairs.push(new RoommatePair(queue[index], queue[index + 1]))
-    }
-    return [pairs, extraPerson];
-}
-
-function determinePriority(studentArray){
-    let raQueue = []
-    let roommateQueue = [] // Queue for students with roommate priority.
-    let LLCQueue = [] // Queue for students with LLC priority.
-    let locationQueue = [] // Queue for students with location priority.
-    let noPrefQueue = [] // Queue for students with no priority.
     // Iterate through array of student objects
     let processedStudent = {}
     for(const student in studentArray) {
         if(processedStudent[student] != true) {
-            if (studentArray[student]['Group_Type'] == 'Res Life') {
+            if (studentArray[student][GROUP_TYPE] == GROUP_TYPE_RES_LIFE) {
                 raQueue.push(studentArray[student]);
             }
-            else if(studentArray[student]["Roommate1Match"] == "1MutualWith1" && studentArray[student]["Roommate_1"] != studentArray[student]["PSU_ID"]) {
-                roommateQueue.push(new RoommatePair(studentArray[student], studentArray[studentArray[student]['Roommate_1']]));
-                processedStudent[studentArray[student]['Roommate_1']] = true;
+            else if(studentArray[student][ROOMMATE_1_MATCH] == MUTUAL_ROOMMATE && studentArray[student][ROOMMATE_1] != studentArray[student]["PSU_ID"]) {
+                roommateQueue.push(new RoommatePair(studentArray[student], studentArray[studentArray[student][ROOMMATE_1]]));
+                processedStudent[studentArray[student][ROOMMATE_1]] = true;
             } 
-            else if((studentArray[student]["Priority"] == "LLC" && studentArray[student]["Requested_LLC_1"] !== "") 
-                    || (studentArray[student]["Priority"] == "Location" && studentArray[student]["Requested_LLC_1"] !== "")) {
+            else if((studentArray[student][PRIORITY] == LLC && studentArray[student][REQUESTED_LLC_1] !== "") 
+                    || (studentArray[student][PRIORITY] == LOCATION && studentArray[student][REQUESTED_LLC_1] !== "")) {
                 LLCQueue.push(studentArray[student]);
             }  
-            else if(studentArray[student]["Priority"] == "Location") {
+            else if(studentArray[student][PRIORITY] == LOCATION) {
                 locationQueue.push(studentArray[student])
             }
             else {
@@ -95,7 +52,7 @@ function determinePriority(studentArray){
         noPref: noPrefPairs, 
         extras: extraStudents
     }
-} // End  determinePriority function.
+} // End  determineStudentPriority function.
 
 
 function LLCPriority(LLCQueue) {
@@ -105,8 +62,8 @@ function LLCPriority(LLCQueue) {
 
     const unpairedLLCs = {};
     for (const student in LLCQueue) {
-        if (LLCQueue[student]["Requested_LLC_1"] === undefined) continue;
-        unpairedLLCs[LLCQueue[student]["Requested_LLC_1"]] && LLCQueue[student]["Requested_LLC_1"] !== undefined ? unpairedLLCs[LLCQueue[student]["Requested_LLC_1"]].push(LLCQueue[student]) : unpairedLLCs[LLCQueue[student]["Requested_LLC_1"]] = [LLCQueue[student]]
+        if (LLCQueue[student][REQUESTED_LLC_1] === undefined) continue;
+        unpairedLLCs[LLCQueue[student][REQUESTED_LLC_1]] && LLCQueue[student][REQUESTED_LLC_1] !== undefined ? unpairedLLCs[LLCQueue[student][REQUESTED_LLC_1]].push(LLCQueue[student]) : unpairedLLCs[LLCQueue[student][REQUESTED_LLC_1]] = [LLCQueue[student]]
     }
 
     const allLLCs = {};
@@ -123,7 +80,7 @@ function doRoommatesBelongInLLC(roommatesArray) {
     let pairsToLLC = []
     let pairsNotToLLC = []
     for (const roommatePair of roommatesArray) {
-        if (roommatePair["firstStudent"]["Requested_LLC_1"] === roommatePair["secondStudent"]["Requested_LLC_1"] && roommatePair["firstStudent"]["Requested_LLC_1"] != "") {
+        if (roommatePair["firstStudent"][REQUESTED_LLC_1] === roommatePair["secondStudent"][REQUESTED_LLC_1] && roommatePair["firstStudent"][REQUESTED_LLC_1] != "") {
             pairsToLLC.push(roommatePair);
         }
         else {
@@ -135,7 +92,7 @@ function doRoommatesBelongInLLC(roommatesArray) {
 
 function putRoommatesInLLC(roommates, LLCs) {
     for (const roommatePair of roommates) {
-        LLCs[roommatePair["firstStudent"]["Requested_LLC_1"]] = [roommatePair].concat(LLCs[roommatePair["firstStudent"]["Requested_LLC_1"]]);
+        LLCs[roommatePair["firstStudent"][REQUESTED_LLC_1]] = [roommatePair].concat(LLCs[roommatePair["firstStudent"][REQUESTED_LLC_1]]);
     }
     return LLCs;
 }
@@ -153,19 +110,19 @@ function locationPriority(locationQueue) {
 
     // Iterate through array of student objects
     for(const student in locationQueue) {
-        if(locationQueue[student]["Requested_Floor_1"] == "First" || locationQueue[student]["Requested_Floor_1"] == "Ground" || locationQueue[student]['Requested_Floor_1'] == '') {
+        if(locationQueue[student][REQUESTED_FLOOR_1] == "First" || locationQueue[student][REQUESTED_FLOOR_1] == "Ground" || locationQueue[student][REQUESTED_FLOOR_1] == '') {
             floor1Floor.push(locationQueue[student])
         }
-        else if(locationQueue[student]["Requested_Floor_1"] == "Second") {
+        else if(locationQueue[student][REQUESTED_FLOOR_1] == "Second") {
             floor2Floor.push(locationQueue[student])
         }
-        else if(locationQueue[student]["Requested_Floor_1"] == "Third") {
+        else if(locationQueue[student][REQUESTED_FLOOR_1] == "Third") {
             floor3Floor.push(locationQueue[student])
         }
-        else if(locationQueue[student]["Requested_Floor_1"] == "Fourth") {
+        else if(locationQueue[student][REQUESTED_FLOOR_1] == "Fourth") {
             floor4Floor.push(locationQueue[student])
         }
-        else if(locationQueue[student]["Requested_Floor_1"] == "Fifth") {
+        else if(locationQueue[student][REQUESTED_FLOOR_1] == "Fifth") {
             floor5Floor.push(locationQueue[student])
         }
     } // End of for loop
@@ -185,8 +142,7 @@ function locationPriority(locationQueue) {
     }];
 } // End of locationPriority function.
 
-//---------------------------------------------------------------------------
+///////////////////////////////////// Exports. /////////////////////////////////////
 module.exports = {
-    genderSort,
-    determinePriority
+    determineStudentPriority
   };

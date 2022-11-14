@@ -8,10 +8,9 @@ const Store = require('electron-store');
 const { download } = require('electron-dl');
 const { join } = require('path');
 const fs = require('fs'); 
-const { genderSort, determinePriority } = require('./processes/studentSorter');
-const { readExcel } = require('./processes/fileReader');
-const { LLCBlocking } = require('./processes/roomBlocker');
-const { raRoomAssign } = require('./processes/MYstudentSorter');
+const { splitStudents } = require('./processes/studentSplitter');
+const { determineStudentPriority } = require('./processes/priorities');
+const { raRoomAssign, LLCRoomAssign } = require('./processes/roomAssignment');
 
 
 // Creates store for storing user data
@@ -69,13 +68,13 @@ const createWindow = () => {
 
   ipcMain.handle('runAssignment', (channel, data) => {
 
-    const [uM, lM, uF, lF] = genderSort(store.get('file'));
-    const queuesUM = determinePriority(uM);
-    const queuesUF = determinePriority(uF);
-    const queuesLM = determinePriority(lM);
-    const queuesLF = determinePriority(lF);
+    const [uM, lM, uF, lF] = splitStudents(store.get('file'));
+    const queuesUM = determineStudentPriority(uM);
+    const queuesUF = determineStudentPriority(uF);
+    const queuesLM = determineStudentPriority(lM);
+    const queuesLF = determineStudentPriority(lF);
     
-    //console.log(Object.keys(lF).length, queuesLF['ra'].length, queuesLF['roommate'].length, queuesLF['LLCs']['LLC FirstGen'].length, queuesLF['LLCs']['LLC Global Village'].length, queuesLF['floors']['f1'].length, queuesLF['floors']['f2'].length, queuesLF['floors']['f3'].length, queuesLF['floors']['f4'].length, queuesLF['floors']['f5'].length, queuesLF['noPref'].length, queuesLF['extras'].length)
+    console.log (Object.keys(uM).length + Object.keys(lM).length + Object.keys(uF).length + Object.keys(lF).length);
     
     fs.readFile(join(__dirname, "../data/blueprint.json"), 'utf8', (err, jsonString) => {
       if (err) {
@@ -85,7 +84,7 @@ const createWindow = () => {
       let blueprintCopy = JSON.parse(jsonString);
       blueprintCopy = raRoomAssign(blueprintCopy, queuesUF['ra'].concat(queuesUM['ra']))
 
-      blueprintCopy = LLCBlocking({"LLC FirstGen" : 2, "LLC Global Village": 2}, blueprintCopy, queuesUM, queuesUF, queuesLM, queuesLF);
+      blueprintCopy = LLCRoomAssign({"LLC FirstGen" : 2, "LLC Global Village": 2}, blueprintCopy, queuesUM, queuesUF, queuesLM, queuesLF);
       const bp = JSON.stringify(blueprintCopy)
       fs.writeFile("output.json", bp, err => {
           if(err){

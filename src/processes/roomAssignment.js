@@ -231,5 +231,6 @@ function LLCRoomAssign(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, low
 
 ///////////////////////////////////// Exports. /////////////////////////////////////
 module.exports = {
-    raRomAssign: LLCRoomAssign
+    raRoomAssign, 
+    LLCRoomAssign
   };
