@@ -74,7 +74,7 @@ const createWindow = () => {
     const queuesLM = determineStudentPriority(lM);
     const queuesLF = determineStudentPriority(lF);
     
-    console.log (Object.keys(uM).length + Object.keys(lM).length + Object.keys(uF).length + Object.keys(lF).length);
+    console.log(Object.keys(uM).length + Object.keys(lM).length + Object.keys(uF).length + Object.keys(lF).length);
     
     fs.readFile(join(__dirname, "../data/blueprint.json"), 'utf8', (err, jsonString) => {
       if (err) {
@@ -93,11 +93,6 @@ const createWindow = () => {
           }
       })// End of fs.writeFile function.
       })
-
-    
-    //let win = new BrowserWindow({width: 800, height: 600});
-    //win.loadFile('src/postprocess.html');
-
   })
 
   /*

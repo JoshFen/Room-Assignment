@@ -22,7 +22,7 @@ function determineStudentPriority(studentArray){
                     || (studentArray[student][PRIORITY] == LOCATION && studentArray[student][REQUESTED_LLC_1] !== "")) {
                 LLCQueue.push(studentArray[student]);
             }  
-            else if(studentArray[student][PRIORITY] == LOCATION) {
+            else if(studentArray[student][PRIORITY] == LOCATION && studentArray[student][REQUESTED_FLOOR_1] !== "") {
                 locationQueue.push(studentArray[student])
             }
             else {
@@ -38,16 +38,17 @@ function determineStudentPriority(studentArray){
     const [noPrefPairs, noPrefExtras] = pairStudents(noPrefQueue);
     const extraStudents = {'LLC': LLCs['extras'], 'Floor': floorExtras, 'noPrefExtras': noPrefExtras}
     const finalLLCs = putRoommatesInLLC(roommates['toLLC'], LLCs['paired'])
+    const roommatesOfFloor = doRoommatesBelongInFloor(roommates['notToLLC']);
     return {
         ra: raQueue, 
-        roommate: roommates['notToLLC'], 
+        roommate: roommatesOfFloor['noPref'], 
         LLCs: finalLLCs, 
         floors: {
-            f1: f1, 
-            f2: f2, 
-            f3: f3, 
-            f4: f4, 
-            f5: f5
+            1: roommatesOfFloor[1].concat(f1), 
+            2: roommatesOfFloor[2].concat(f2), 
+            3: roommatesOfFloor[3].concat(f3), 
+            4: roommatesOfFloor[4].concat(f4), 
+            5: roommatesOfFloor[5].concat(f5)
         },
         noPref: noPrefPairs, 
         extras: extraStudents
@@ -97,6 +98,27 @@ function putRoommatesInLLC(roommates, LLCs) {
     return LLCs;
 }
 
+function doRoommatesBelongInFloor(roommatesArray) {
+    let pairsToFloor = {1: [], 2: [], 3: [], 4: [], 5: [], noPref: []};
+
+    for(const roommatePair of roommatesArray) {
+        pairsToFloor[getRequestedFloor(roommatePair)].push(roommatePair);
+    }
+    return pairsToFloor;
+}
+
+function getRequestedFloor(roommatePair) {
+    const floors = {"First": 1, "Ground": 1, "Second": 2, "Third": 3, "Fourth": 4, "Fifth": 5};
+    const firstStudentFloorPreference = floors[roommatePair["firstStudent"][REQUESTED_FLOOR_1]];
+    const secondStudentFloorPreference = floors[roommatePair["secondStudent"][REQUESTED_FLOOR_1]];
+    return firstStudentFloorPreference || secondStudentFloorPreference ? (firstStudentFloorPreference ? firstStudentFloorPreference: secondStudentFloorPreference) : "noPref";
+}
+
+/*function getRequestedFloor(student) {
+    return student[REQUESTED_FLOOR_1];
+}*/
+
+
 function locationPriority(locationQueue) {
     if (locationQueue.length === 0) {
         return [];
@@ -110,7 +132,7 @@ function locationPriority(locationQueue) {
 
     // Iterate through array of student objects
     for(const student in locationQueue) {
-        if(locationQueue[student][REQUESTED_FLOOR_1] == "First" || locationQueue[student][REQUESTED_FLOOR_1] == "Ground" || locationQueue[student][REQUESTED_FLOOR_1] == '') {
+        if(locationQueue[student][REQUESTED_FLOOR_1] == "First" || locationQueue[student][REQUESTED_FLOOR_1] == "Ground") {
             floor1Floor.push(locationQueue[student])
         }
         else if(locationQueue[student][REQUESTED_FLOOR_1] == "Second") {
