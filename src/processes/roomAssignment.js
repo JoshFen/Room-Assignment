@@ -21,7 +21,9 @@ function raRoomAssign(blueprint, RAQueue) {
             if(blueprint["floor"][1]["rooms"][112]["roommates"].length < 1){
 
                 blueprint["floor"][1]["rooms"][112]["roommates"].push(RAStudent);
+                blueprint["floor"][1]["rooms"][112]["full"] = true;
                 raRooms[112] = RAStudent;
+                
             }
             else {
                 noPref.push(RAStudent);
@@ -32,11 +34,13 @@ function raRoomAssign(blueprint, RAQueue) {
             if(blueprint["floor"][2]["rooms"][212]["roommates"].length < 1) {
 
                 blueprint["floor"][2]["rooms"][212]["roommates"].push(RAStudent);
+                blueprint["floor"][2]["rooms"][212]["full"] = true;
                 raRooms[212] = RAStudent;
             }
             else if(blueprint["floor"][2]["rooms"]["roommates"].length < 1) {
 
                 blueprint["floor"][2]["rooms"][216]["roommates"].push(RAStudent);
+                blueprint["floor"][2]["rooms"][216]["full"] = true;
                 raRooms[216] = RAStudent;
             }
             else {
@@ -48,11 +52,13 @@ function raRoomAssign(blueprint, RAQueue) {
             if(blueprint["floor"][3]["rooms"][312]["roommates"].length < 1) {
 
                 blueprint["floor"][3]["rooms"][312]["roommates"].push(RAStudent);
+                blueprint["floor"][3]["rooms"][312]["full"] = true;
                 raRooms[312] = RAStudent;
             }
             else if(blueprint["floor"][3]["rooms"][315]["roommates"].length < 1) {
 
                 blueprint["floor"][3]["rooms"][315]["roommates"].push(RAStudent);
+                blueprint["floor"][3]["rooms"][315]["full"] = true;
                 raRooms[315] = RAStudent;
             } 
             else {
@@ -64,11 +70,13 @@ function raRoomAssign(blueprint, RAQueue) {
             if(blueprint["floor"][4]["rooms"][412]["roommates"].length < 1) {
 
                 blueprint["floor"][4]["rooms"][412]["roommates"].push(RAStudent);
+                blueprint["floor"][4]["rooms"][412]["full"] = true;
                 raRooms[412] = RAStudent;
             }
             else if(blueprint["floor"][4]["rooms"][415]["roommates"].length < 1) {
 
                 blueprint["floor"][4]["rooms"][415]["roommates"].push(RAStudent);
+                blueprint["floor"][4]["rooms"][415]["full"] = true;
                 raRooms[415] = RAStudent;
             } 
             else {
@@ -80,11 +88,13 @@ function raRoomAssign(blueprint, RAQueue) {
             if(blueprint["floor"][5]["rooms"][512]["roommates"].length < 1) {
 
                 blueprint["floor"][5]["rooms"][512]["roommates"].push(RAStudent);
+                blueprint["floor"][5]["rooms"][512]["full"] = true;
                 raRooms[512] = RAStudent;
             }
             else if(blueprint["floor"][5]["rooms"][515]["roommates"].length < 1) {
 
                 blueprint["floor"][5]["rooms"][515]["roommates"].push(RAStudent);
+                blueprint["floor"][5]["rooms"][515]["full"] = true;
                 raRooms[515] = RAStudent;
             } 
             else {
@@ -105,6 +115,7 @@ function raRoomAssign(blueprint, RAQueue) {
                 fNum = Math.floor(room / 100);
                 raRooms[room] = noPref.pop()
                 blueprint["floor"][fNum]["rooms"][room]["roommates"].push(raRooms[room]);
+                blueprint["floor"][fNum]["rooms"][room]["full"] = true;
                 index++;
             }
         }
@@ -215,6 +226,11 @@ function LLCRoomAssign(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, low
                     } // End of room roomSize for loop.
 
                     blueprint["floor"][floorNum]["rooms"][roomNum]["roommates"] = roomies; // Current room roomates array is assigned in blueprint.
+
+                    if(roomies.length == (blueprint["floor"][floorNum]["rooms"][roomNum]["roomSize"] / 2)) {
+                        blueprint["floor"][floorNum]["rooms"][roomNum]["full"] = true
+                    }
+
                     counter += 1; // Increment counter to next student group.
 
                 } // End of if to check if roommates have been assigned.
@@ -227,8 +243,99 @@ function LLCRoomAssign(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, low
 
     return blueprint // Returns edited floorplan with rooms assigned.
 
-} // End of LLCBlocking function.
+} // End of LLCRoomAssign function.
 
+function isValidRoommateQueue(studentPairs, floorNum) {
+    return studentPairs["floors"] != undefined && studentPairs["floors"][floorNum] != undefined && studentPairs["floors"][floorNum].length > 0;
+}
+
+function locationRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMalePairs, lowerFemalePairs) {
+
+    for(const floorNum in blueprint["floor"]) {
+
+        for(const roomNum in blueprint["floor"][floorNum][rooms]) {
+
+            if(isValidRoommateQueue(upperMalePairs, floorNum) || isValidRoommateQueue(upperFemalePairs, floorNum) || isValidRoommateQueue(lowerMalePairs, floorNum) || isValidRoommateQueue(lowerFemalePairs, floorNum)) {
+                    
+                for(let i = 0; i < (roomSize / 2); i++) { // Iterates for each room spot to add students as pairs.
+                    
+                    let unassigned = true; // Tracks whether a pair has been assigned to current room.
+
+                    while(unassigned) {  // Iterates until a pair is assigned to the room.
+
+                        if(counter % 4 == 0) { // Assign lower class females to current room.
+                            if(isValidRoommateQueue(lowerFemalePairs, floorNum)) { // Validate lower female pairs queue.
+                                roomies.push(lowerFemalePairs["floors"][floorNum].pop());
+                                unassigned = false; // Exit while loop.
+                            }
+                            else if(i > 0) { // There are no more lf pairs but the rooms already has some assigned.
+                                break;
+                            }
+                            else {
+                                counter += 1; // Goes to upper male.
+                            }
+                        }
+                        else if(counter % 3 == 0) { // Assign lower class males to current room.
+                            if(isValidRoommateQueue(lowerMalePairs, floorNum)) { // Validate lower male pairs queue.
+                                roomies.push(lowerMalePairs["floors"][floorNum].pop());
+                                unassigned = false; // Exit while loop.
+                            }
+                            else if(i > 0) { // There are no more lm pairs but the rooms already has some assigned.
+                                break;
+                            }
+                            else {
+                                counter += 1; // Goes to lower female.
+                            }
+                        }
+                        else if(counter % 2 == 0) { // Assign upper class females to current room.
+                            if(isValidRoommateQueue(upperFemalePairs, floorNum)) { // Validate upper female pairs queue.
+                                roomies.push(upperFemalePairs["floors"][floorNum].pop());
+                                unassigned = false; // Exit while loop.
+                            }
+                            else if(i > 0) { // There are no more uf pairs but the rooms already has some assigned.
+                                break; // The remained of the room will be empty.
+
+                            }
+                            else {
+                                counter += 1; // Goes to lower male.
+                            }
+                        }
+                        else { // Assign upper class males to current room.
+                            if(isValidRoommateQueue(upperMalePairs, floorNum)) { // Validate upper male pairs queue. 
+                                roomies.push(upperMalePairs["floors"][floorNum].pop()); 
+                                unassigned = false; // Exit while loop.
+                            }
+                            else if(i > 0) { // There are no more um pairs but the rooms already has some assigned. 
+                                break; // The remained of the room will be empty.
+                            }
+                            else {
+                                counter += 1; // Goes to upper female.
+                            }  
+                        }
+
+                    } // End of while loop.
+
+                } // End of room roomSize for loop.
+
+                blueprint["floor"][floorNum]["rooms"][roomNum]["roommates"] = roomies; // Current room roomates array is assigned in blueprint.
+
+                if(roomies.length == (blueprint["floor"][floorNum]["rooms"][roomNum]["roomSize"] / 2)) {
+                    blueprint["floor"][floorNum]["rooms"][roomNum]["full"] = true
+                }
+
+                counter += 1; // Increment counter to next student group.
+
+            } // End of if to check if roommates have been assigned.
+
+        } // End of rooms for loop.
+
+    } // End of floorss for loop.
+
+} // End of roommate locationRoomAssign function.
+
+function roommateRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMalePairs, lowerFemalePairs) {
+
+} // End of roommateRoomAssign function.
 ///////////////////////////////////// Exports. /////////////////////////////////////
 module.exports = {
     raRoomAssign, 
