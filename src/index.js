@@ -73,8 +73,16 @@ const createWindow = () => {
     const queuesUF = determineStudentPriority(uF);
     const queuesLM = determineStudentPriority(lM);
     const queuesLF = determineStudentPriority(lF);
-    
-    console.log(Object.keys(uM).length + Object.keys(lM).length + Object.keys(uF).length + Object.keys(lF).length);
+
+    const bp = JSON.stringify({UM: queuesUM, UF: queuesUF, LM: queuesLM, LF: queuesLF});
+    fs.writeFile("outputss.json", bp, err => {
+      if(err){
+        console.log(err)
+          throw err;
+      }
+    })// End of fs.writeFile function.
+    const sum = Object.keys(uM).length + Object.keys(lM).length + Object.keys(uF).length + Object.keys(lF).length;
+    console.log(Object.keys(uM).length,Object.keys(lM).length, Object.keys(uF).length, Object.keys(lF).length, sum);
     
     fs.readFile(join(__dirname, "../data/blueprint.json"), 'utf8', (err, jsonString) => {
       if (err) {
@@ -85,6 +93,7 @@ const createWindow = () => {
       blueprintCopy = raRoomAssign(blueprintCopy, queuesUF['ra'].concat(queuesUM['ra']))
 
       blueprintCopy = LLCRoomAssign({"LLC FirstGen" : 2, "LLC Global Village": 2}, blueprintCopy, queuesUM, queuesUF, queuesLM, queuesLF);
+      //blueprintCopt = roommateRoomAssign(blueprintCopy, queuesUM, queuesUF, queuesLM, queuesLF);
       const bp = JSON.stringify(blueprintCopy)
       fs.writeFile("output.json", bp, err => {
           if(err){

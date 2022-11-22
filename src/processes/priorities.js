@@ -39,6 +39,7 @@ function determineStudentPriority(studentArray){
     const extraStudents = {'LLC': LLCs['extras'], 'Floor': floorExtras, 'noPrefExtras': noPrefExtras}
     const finalLLCs = putRoommatesInLLC(roommates['toLLC'], LLCs['paired'])
     const roommatesOfFloor = doRoommatesBelongInFloor(roommates['notToLLC']);
+
     return {
         ra: raQueue, 
         roommate: roommatesOfFloor['noPref'], 
@@ -121,7 +122,13 @@ function getRequestedFloor(roommatePair) {
 
 function locationPriority(locationQueue) {
     if (locationQueue.length === 0) {
-        return [];
+        return [[], [], [], [], [], {
+            floor1ExtraStudent: [], 
+            floor2ExtraStudent: [], 
+            floor3ExtraStudent: [],
+            floor4ExtraStudent: [], 
+            floor5ExtraStudent: []
+        }];
     }
 
     let floor1Floor = [] // Queue for students requesting first floor rooms.
