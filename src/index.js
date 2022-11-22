@@ -11,6 +11,7 @@ const fs = require('fs');
 const { splitStudents } = require('./processes/studentSplitter');
 const { determineStudentPriority } = require('./processes/priorities');
 const { raRoomAssign, LLCRoomAssign } = require('./processes/roomAssignment');
+const { createBlueprint } = require('./processes/blueprint');
 
 
 // Creates store for storing user data
@@ -48,6 +49,7 @@ const createWindow = () => {
    */
   app.whenReady().then(() => {
     createWindow();
+    createBlueprint('data/floorplan.json');
   })
 
   /*
