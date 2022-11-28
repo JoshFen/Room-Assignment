@@ -143,6 +143,7 @@ function LLCRoomAssign(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, low
                 let counter = 1; // Keeps track of what gender/student year to assign to a room.
                 let roomies = [] // Array will hold the roommates to fill an entire room.
                 let roomSize = blueprint["floor"][floorNum]["rooms"][roomNum]["roomSize"]; // Retrieves the room roomSize for current room.
+                let sex = ""
 
                 if(isValidLLCQueue(upperMalePairs, LLCName) || isValidLLCQueue(upperFemalePairs, LLCName) || isValidLLCQueue(lowerMalePairs, LLCName) || isValidLLCQueue(lowerFemalePairs, LLCName)) {
                     
@@ -156,6 +157,7 @@ function LLCRoomAssign(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, low
                                 if(isValidLLCQueue(lowerFemalePairs, LLCName)) { // Validate lower female pairs queue.
                                     roomies.push(lowerFemalePairs["LLCs"][LLCName].pop());
                                     unassigned = false; // Exit while loop.
+                                    sex = "F"
                                 }
                                 else if(i > 0) { // There are no more lf pairs but the rooms already has some assigned.
                                     if(isValidLLCQueue(upperFemalePairs, LLCName)) { // Validate upper female pairs queue.
@@ -173,6 +175,7 @@ function LLCRoomAssign(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, low
                                 if(isValidLLCQueue(lowerMalePairs, LLCName)) { // Validate lower male pairs queue.
                                     roomies.push(lowerMalePairs["LLCs"][LLCName].pop());
                                     unassigned = false; // Exit while loop.
+                                    sex = "M"
                                 }
                                 else if(i > 0) { // There are no more lm pairs but the rooms already has some assigned.
                                     if(isValidLLCQueue(upperMalePairs, LLCName)) {
@@ -190,6 +193,7 @@ function LLCRoomAssign(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, low
                                 if(isValidLLCQueue(upperFemalePairs, LLCName)) { // Validate upper female pairs queue.
                                     roomies.push(upperFemalePairs["LLCs"][LLCName].pop());
                                     unassigned = false; // Exit while loop.
+                                    sex = "F"
                                 }
                                 else if(i > 0) { // There are no more uf pairs but the rooms already has some assigned.
                                     if(isValidLLCQueue(lowerFemalePairs, LLCName)) { // Validate lower female pairs queue.
@@ -207,6 +211,7 @@ function LLCRoomAssign(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, low
                                 if(isValidLLCQueue(upperMalePairs, LLCName)) { // Validate upper male pairs queue. 
                                     roomies.push(upperMalePairs[LLCName].pop()); 
                                     unassigned = false; // Exit while loop.
+                                    sex = "M"
                                 }
                                 else if(i > 0) { // There are no more um pairs but the rooms already has some assigned.
                                     if(isValidLLCQueue(lowerMalePairs, LLCName)) { // Validate lower male pairs queue.
@@ -226,7 +231,8 @@ function LLCRoomAssign(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, low
                     } // End of room roomSize for loop.
 
                     blueprint["floor"][floorNum]["rooms"][roomNum]["roommates"] = roomies; // Current room roomates array is assigned in blueprint.
-
+                    blueprint["floor"][floorNum]["rooms"][roomNum]["sex"] = sex
+ 
                     if(roomies.length == (blueprint["floor"][floorNum]["rooms"][roomNum]["roomSize"] / 2)) {
                         blueprint["floor"][floorNum]["rooms"][roomNum]["full"] = true
                     }
@@ -253,10 +259,15 @@ function locationRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMa
 
     for(const floorNum in blueprint["floor"]) {
 
-        for(const roomNum in blueprint["floor"][floorNum][rooms]) {
+        for(const roomNum in blueprint["floor"][floorNum]["rooms"]) {
 
-            if(isValidRoommateQueue(upperMalePairs, floorNum) || isValidRoommateQueue(upperFemalePairs, floorNum) || isValidRoommateQueue(lowerMalePairs, floorNum) || isValidRoommateQueue(lowerFemalePairs, floorNum)) {
-                    
+            let counter = 1
+            let roomies = []
+            let roomSize = blueprint["floor"][floorNum]["rooms"][roomNum]["roomSize"]
+            let sex = ""
+
+            if(blueprint["floor"][floorNum]["rooms"][roomNum]["roommates"].length < 1 && (isValidRoommateQueue(upperMalePairs, floorNum) || isValidRoommateQueue(upperFemalePairs, floorNum) || isValidRoommateQueue(lowerMalePairs, floorNum) || isValidRoommateQueue(lowerFemalePairs, floorNum))) {
+
                 for(let i = 0; i < (roomSize / 2); i++) { // Iterates for each room spot to add students as pairs.
                     
                     let unassigned = true; // Tracks whether a pair has been assigned to current room.
@@ -267,6 +278,7 @@ function locationRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMa
                             if(isValidRoommateQueue(lowerFemalePairs, floorNum)) { // Validate lower female pairs queue.
                                 roomies.push(lowerFemalePairs["floors"][floorNum].pop());
                                 unassigned = false; // Exit while loop.
+                                sex = "F"
                             }
                             else if(i > 0) { // There are no more lf pairs but the rooms already has some assigned.
                                 break;
@@ -279,6 +291,7 @@ function locationRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMa
                             if(isValidRoommateQueue(lowerMalePairs, floorNum)) { // Validate lower male pairs queue.
                                 roomies.push(lowerMalePairs["floors"][floorNum].pop());
                                 unassigned = false; // Exit while loop.
+                                sex = "M"
                             }
                             else if(i > 0) { // There are no more lm pairs but the rooms already has some assigned.
                                 break;
@@ -291,6 +304,7 @@ function locationRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMa
                             if(isValidRoommateQueue(upperFemalePairs, floorNum)) { // Validate upper female pairs queue.
                                 roomies.push(upperFemalePairs["floors"][floorNum].pop());
                                 unassigned = false; // Exit while loop.
+                                sex = "F"
                             }
                             else if(i > 0) { // There are no more uf pairs but the rooms already has some assigned.
                                 break; // The remained of the room will be empty.
@@ -302,8 +316,9 @@ function locationRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMa
                         }
                         else { // Assign upper class males to current room.
                             if(isValidRoommateQueue(upperMalePairs, floorNum)) { // Validate upper male pairs queue. 
-                                roomies.push(upperMalePairs["floors"][floorNum].pop()); 
+                                roomies.push(upperMalePairs["floors"][floorNum].pop());
                                 unassigned = false; // Exit while loop.
+                                sex = "M"
                             }
                             else if(i > 0) { // There are no more um pairs but the rooms already has some assigned. 
                                 break; // The remained of the room will be empty.
@@ -318,6 +333,7 @@ function locationRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMa
                 } // End of room roomSize for loop.
 
                 blueprint["floor"][floorNum]["rooms"][roomNum]["roommates"] = roomies; // Current room roomates array is assigned in blueprint.
+                blueprint["floor"][floorNum]["rooms"][roomNum]["sex"] = sex
 
                 if(roomies.length == (blueprint["floor"][floorNum]["rooms"][roomNum]["roomSize"] / 2)) {
                     blueprint["floor"][floorNum]["rooms"][roomNum]["full"] = true
@@ -330,7 +346,7 @@ function locationRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMa
         } // End of rooms for loop.
 
     } // End of floorss for loop.
-
+    return blueprint
 } // End of roommate locationRoomAssign function.
 
 function roommateRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMalePairs, lowerFemalePairs) {
@@ -339,5 +355,6 @@ function roommateRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMa
 ///////////////////////////////////// Exports. /////////////////////////////////////
 module.exports = {
     raRoomAssign, 
-    LLCRoomAssign
+    LLCRoomAssign,
+    locationRoomAssign
   };
