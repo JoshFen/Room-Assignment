@@ -253,7 +253,7 @@ function locationRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMa
 
     for(const floorNum in blueprint["floor"]) {
 
-        for(const roomNum in blueprint["floor"][floorNum][rooms]) {
+        for(const roomNum in blueprint["floor"][floorNum]["rooms"]) {
 
             if(isValidRoommateQueue(upperMalePairs, floorNum) || isValidRoommateQueue(upperFemalePairs, floorNum) || isValidRoommateQueue(lowerMalePairs, floorNum) || isValidRoommateQueue(lowerFemalePairs, floorNum)) {
                     
@@ -329,7 +329,8 @@ function locationRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMa
 
         } // End of rooms for loop.
 
-    } // End of floorss for loop.
+    } // End of floors for loop.
+    return blueprint;
 
 } // End of roommate locationRoomAssign function.
 
@@ -339,5 +340,7 @@ function roommateRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMa
 ///////////////////////////////////// Exports. /////////////////////////////////////
 module.exports = {
     raRoomAssign, 
-    LLCRoomAssign
+    LLCRoomAssign,
+    locationRoomAssign,
+    roommateRoomAssign
   };

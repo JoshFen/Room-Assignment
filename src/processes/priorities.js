@@ -39,7 +39,7 @@ function determineStudentPriority(studentArray){
     const extraStudents = {'LLC': LLCs['extras'], 'Floor': floorExtras, 'noPrefExtras': noPrefExtras}
     const finalLLCs = putRoommatesInLLC(roommates['toLLC'], LLCs['paired'])
     const roommatesOfFloor = doRoommatesBelongInFloor(roommates['notToLLC']);
-
+    const x = [...roommatesOfFloor[1], ...f1]
     return {
         ra: raQueue, 
         roommate: roommatesOfFloor['noPref'], 

@@ -10,7 +10,7 @@ const { join } = require('path');
 const fs = require('fs'); 
 const { splitStudents } = require('./processes/studentSplitter');
 const { determineStudentPriority } = require('./processes/priorities');
-const { raRoomAssign, LLCRoomAssign } = require('./processes/roomAssignment');
+const { raRoomAssign, LLCRoomAssign, locationRoomAssign } = require('./processes/roomAssignment');
 const { createBlueprint } = require('./processes/blueprint');
 
 
@@ -95,8 +95,8 @@ const createWindow = () => {
       blueprintCopy = raRoomAssign(blueprintCopy, queuesUF['ra'].concat(queuesUM['ra']))
 
       blueprintCopy = LLCRoomAssign({"LLC FirstGen" : 2, "LLC Global Village": 2}, blueprintCopy, queuesUM, queuesUF, queuesLM, queuesLF);
-      //blueprintCopt = roommateRoomAssign(blueprintCopy, queuesUM, queuesUF, queuesLM, queuesLF);
-      const bp = JSON.stringify(blueprintCopy)
+      blueprintCopt = locationRoomAssign(blueprintCopy, queuesUM, queuesUF, queuesLM, queuesLF);
+      const bp = JSON.stringify(blueprintCopt)
       fs.writeFile("output.json", bp, err => {
           if(err){
             console.log(err)
