@@ -131,7 +131,7 @@ function isValidLLCQueue(studentPairs, LLCName) {
 }
 
 function LLCRoomAssign(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, lowerMalePairs, lowerFemalePairs) {
-
+    let unfilledRooms = {};
     for(const LLCName in LLCInfo) { // Iterate for each LLC from user input.
 
         let floorNum = LLCInfo[LLCName]; // Assuming LLC info is obj 
@@ -141,9 +141,9 @@ function LLCRoomAssign(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, low
             if( blueprint["floor"][floorNum]["rooms"][roomNum]["roommates"].length < 1) { // Checks if the room has students already (RA assignment).
 
                 let counter = 1; // Keeps track of what gender/student year to assign to a room.
-                let roomies = [] // Array will hold the roommates to fill an entire room.
+                let roomies = []; // Array will hold the roommates to fill an entire room.
                 let roomSize = blueprint["floor"][floorNum]["rooms"][roomNum]["roomSize"]; // Retrieves the room roomSize for current room.
-                let sex = ""
+                let sex = "";
 
                 if(isValidLLCQueue(upperMalePairs, LLCName) || isValidLLCQueue(upperFemalePairs, LLCName) || isValidLLCQueue(lowerMalePairs, LLCName) || isValidLLCQueue(lowerFemalePairs, LLCName)) {
                     
@@ -230,11 +230,14 @@ function LLCRoomAssign(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, low
 
                     } // End of room roomSize for loop.
 
-                    blueprint["floor"][floorNum]["rooms"][roomNum]["roommates"] = roomies; // Current room roomates array is assigned in blueprint.
+                    blueprint["floor"][floorNum]["rooms"][roomNum]["roommates"] = roomies; // Current room roommates array is assigned in blueprint.
                     blueprint["floor"][floorNum]["rooms"][roomNum]["sex"] = sex
  
-                    if(roomies.length == (blueprint["floor"][floorNum]["rooms"][roomNum]["roomSize"] / 2)) {
+                    if (roomies.length == (blueprint["floor"][floorNum]["rooms"][roomNum]["roomSize"] / 2)) {
                         blueprint["floor"][floorNum]["rooms"][roomNum]["full"] = true
+                    }
+                    else {
+                        unfilledRooms[roomNum] = {"sex": sex, "group-type": null};
                     }
 
                     counter += 1; // Increment counter to next student group.
@@ -246,7 +249,7 @@ function LLCRoomAssign(LLCInfo, blueprint, upperMalePairs, upperFemalePairs, low
         } // End of rooms for loop.
 
     } // End of LLC for loop.
-
+    console.log(unfilledRooms);
     return blueprint // Returns edited floorplan with rooms assigned.
 
 } // End of LLCRoomAssign function.
@@ -256,7 +259,7 @@ function isValidRoommateQueue(studentPairs, floorNum) {
 }
 
 function locationRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMalePairs, lowerFemalePairs) {
-
+    let unfilledRooms = {};
     for(const floorNum in blueprint["floor"]) {
 
         for(const roomNum in blueprint["floor"][floorNum]["rooms"]) {
@@ -338,6 +341,9 @@ function locationRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMa
                 if(roomies.length == (blueprint["floor"][floorNum]["rooms"][roomNum]["roomSize"] / 2)) {
                     blueprint["floor"][floorNum]["rooms"][roomNum]["full"] = true
                 }
+                else {
+                    unfilledRooms[roomNum] = {"sex": sex, "group-type": null};
+                }
 
                 counter += 1; // Increment counter to next student group.
 
@@ -345,16 +351,25 @@ function locationRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMa
 
         } // End of rooms for loop.
 
-    } // End of floorss for loop.
+    } // End of floors for loop.
+    console.log(unfilledRooms);
     return blueprint
 } // End of roommate locationRoomAssign function.
 
-function roommateRoomAssign(blueprint, upperMalePairs, upperFemalePairs, lowerMalePairs, lowerFemalePairs) {
+function roommateRoomAssign(blueprint, unfilledRooms, upperMalePairs, upperFemalePairs, lowerMalePairs, lowerFemalePairs) {
 
+    for (const unfilledRoomNumber in unfilledRooms) {
+        const floorNumber = unfilledRoomNumber.charAt(0);
+        //const unfilledRoom = blueprint["floor"][floorNumber]["rooms"][unfilledRoomNumber]
+    }
+
+    return blueprint
 } // End of roommateRoomAssign function.
+
 ///////////////////////////////////// Exports. /////////////////////////////////////
 module.exports = {
     raRoomAssign, 
     LLCRoomAssign,
-    locationRoomAssign
+    locationRoomAssign,
+    roommateRoomAssign
   };
