@@ -43,6 +43,7 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
                 "RARoom" : ra,
                 "LLC": false,
                 "sex": "",
+                "group-type": "",
                 "roommates": [],
                 "full": false
             }
@@ -57,6 +58,7 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
                 "RARoom" : ra,
                 "LLC": false,
                 "sex": "",
+                "group-type": "",
                 "roommates": [],
                 "full": false
             }
@@ -71,6 +73,7 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
                 "RARoom" : ra,
                 "LLC": false,
                 "sex": "",
+                "group-type": "",
                 "roommates": [],
                 "full": false
             }
@@ -85,6 +88,7 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
                 "RARoom" : ra,
                 "LLC": false,
                 "sex": "",
+                "group-type": "",
                 "roommates": [],
                 "full": false
             }
@@ -99,6 +103,7 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
                 "RARoom" : ra,
                 "LLC": false,
                 "sex": "",
+                "group-type": "",
                 "roommates": [],
                 "full": false
             }

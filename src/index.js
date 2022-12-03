@@ -10,8 +10,10 @@ const { join } = require('path');
 const fs = require('fs'); 
 const { splitStudents } = require('./processes/studentSplitter');
 const { determineStudentPriority } = require('./processes/priorities');
-const { raRoomAssign, LLCRoomAssign, locationRoomAssign } = require('./processes/roomAssignment');
+const { raRoomAssign, LLCRoomAssign, locationRoomAssign, completeUnfilledRooms, roomAssign, makeUnfilledRooms } = require('./processes/roomAssignment');
 const { createBlueprint } = require('./processes/blueprint');
+const { contextIsolated } = require('process');
+const { tempName, convertJsonToExcel } = require('./processes/convertToExcel');
 
 // Creates store for storing user data
 const store = new Store();
@@ -48,7 +50,7 @@ const createWindow = () => {
    */
   app.whenReady().then(() => {
     createWindow();
-    createBlueprint('data/floorplan.json');
+    //createBlueprint('data/floorplan.json');
   })
 
   /*
@@ -70,10 +72,10 @@ const createWindow = () => {
   ipcMain.handle('runAssignment', (channel, data) => {
 
     const [uM, lM, uF, lF] = splitStudents(store.get('file'));
-    const queuesUM = determineStudentPriority(uM);
-    const queuesUF = determineStudentPriority(uF);
-    const queuesLM = determineStudentPriority(lM);
-    const queuesLF = determineStudentPriority(lF);
+    let queuesUM = determineStudentPriority(uM);
+    let queuesUF = determineStudentPriority(uF);
+    let queuesLM = determineStudentPriority(lM);
+    let queuesLF = determineStudentPriority(lF);
 
     const bp = JSON.stringify({UM: queuesUM, UF: queuesUF, LM: queuesLM, LF: queuesLF});
     fs.writeFile("outputss.json", bp, err => {
@@ -90,18 +92,31 @@ const createWindow = () => {
           console.log("File read failed:", err)
           return
       }
+      let unfilledRooms = {"incomplete": {}, "empty": {}};
       let blueprintCopy = JSON.parse(jsonString);
-      blueprintCopy = raRoomAssign(blueprintCopy, queuesUF['ra'].concat(queuesUM['ra']))
 
-      blueprintCopy = LLCRoomAssign({"LLC FirstGen" : 2, "LLC Global Village": 2}, blueprintCopy, queuesUM, queuesUF, queuesLM, queuesLF);
-      blueprintCopt = locationRoomAssign(blueprintCopy, queuesUM, queuesUF, queuesLM, queuesLF);
-      const bp = JSON.stringify(blueprintCopt)
+      unfilledRooms = makeUnfilledRooms(blueprintCopy, unfilledRooms);   
+
+      
+      [blueprintCopy, unfilledRooms] = raRoomAssign(blueprintCopy, unfilledRooms, queuesUF['ra'].concat(queuesUM['ra']));   
+      [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = LLCRoomAssign({"LLC FirstGen" : 2, "LLC Global Village": 2}, blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
+      [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = locationRoomAssign(blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
+      [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = completeUnfilledRooms(blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
+      [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = roomAssign(blueprintCopy, unfilledRooms, "roommate", queuesUM, queuesUF, queuesLM, queuesLF);
+      [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = completeUnfilledRooms(blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
+      [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = roomAssign(blueprintCopy, unfilledRooms, "noPref", queuesUM, queuesUF, queuesLM, queuesLF);
+
+
+      const bp = JSON.stringify(tempName(blueprintCopy))
       fs.writeFile("output.json", bp, err => {
           if(err){
             console.log(err)
               throw err;
           }
       })// End of fs.writeFile function.
+
+      const x = tempName(blueprintCopy);
+      convertJsonToExcel(x)
     })
   })
 
