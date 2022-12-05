@@ -4,6 +4,7 @@
     --psu-blue-dark:  #1a2e65;
     --success: #198754;
     --danger: #DC3545;
+    --danger-dark: #ad1f2d;
     font-family: proxima-nova, sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -25,6 +26,16 @@ body {
     margin: 0;
 } 
 
+.disabled {
+    opacity: .5;
+}
+
+.disabled:hover {
+    pointer-events: none;
+    background-color: var(--psu-blue) !important;
+    border: 1px solid var(--psu-blue) !important;
+}
+
 #loadingContainer {
     display: none;
 }
@@ -36,14 +47,30 @@ body {
 
 .btn {
     color: white;
+}
+
+.btn:hover {
+    cursor: pointer;
+}
+
+.btn-normal {
     background-color: var(--psu-blue);
     border: 1px solid var(--psu-blue);
 }
 
-.btn:hover {
+.btn-normal:hover {
     background-color: var(--psu-blue-dark);
     border: 1px solid var(--psu-blue);
-    cursor: pointer;
+}
+
+.btn-danger {
+    background-color: var(--danger);
+    border: 1px solid var(--danger);
+}
+
+.btn-danger:hover {
+    background-color: var(--danger-dark);
+    border: 1px solid var(--danger-dark);
 }
 
 .btn-med {
@@ -52,6 +79,14 @@ body {
     font-size: large;
     border-radius: .3rem;
     border: none;
+}
+
+.btn-sm {
+    width: 70px; 
+    height: 35px;
+    font-size: medium;
+    border-radius: .3rem;
+    border-none;
 }
 
 .banner { 

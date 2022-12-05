@@ -10,9 +10,7 @@ const { join } = require('path');
 const fs = require('fs'); 
 const { splitStudents } = require('./processes/studentSplitter');
 const { determineStudentPriority } = require('./processes/priorities');
-const { raRoomAssign, LLCRoomAssign, locationRoomAssign, completeUnfilledRooms, roomAssign, makeUnfilledRooms } = require('./processes/roomAssignment');
-const { createBlueprint } = require('./processes/blueprint');
-const { contextIsolated } = require('process');
+const { makeUnfilledRooms, runRoomAssignment } = require('./processes/roomAssignment');
 const { tempName, convertJsonToExcel } = require('./processes/convertToExcel');
 
 // Creates store for storing user data
@@ -61,31 +59,28 @@ const createWindow = () => {
    */ 
   ipcMain.on('uploadFile', (channel, data) => {
     store.set('file', data);
-    console.log(store.get('file'))
+    const currentWin = BrowserWindow.getFocusedWindow();
+    currentWin.webContents.send('changePageToPreprocess');
   })
 
   ipcMain.on('sendLLCInfo', (channel, data) => {
     store.set('LLCInfo', data);
-    console.log(store.get('LLCInfo'))
+    createPopupWindow();
+  })
+
+  ipcMain.on('cancelRun', (channel, data) => {
+    closePopupWindow();
   })
 
   ipcMain.handle('runAssignment', (channel, data) => {
+
+    closePopupWindow();
 
     const [uM, lM, uF, lF] = splitStudents(store.get('file'));
     let queuesUM = determineStudentPriority(uM);
     let queuesUF = determineStudentPriority(uF);
     let queuesLM = determineStudentPriority(lM);
     let queuesLF = determineStudentPriority(lF);
-
-    const bp = JSON.stringify({UM: queuesUM, UF: queuesUF, LM: queuesLM, LF: queuesLF});
-    fs.writeFile("outputss.json", bp, err => {
-      if(err){
-        console.log(err)
-          throw err;
-      }
-    })// End of fs.writeFile function.
-    const sum = Object.keys(uM).length + Object.keys(lM).length + Object.keys(uF).length + Object.keys(lF).length;
-    console.log(Object.keys(uM).length,Object.keys(lM).length, Object.keys(uF).length, Object.keys(lF).length, sum);
     
     fs.readFile(join(__dirname, "../data/blueprint.json"), 'utf8', (err, jsonString) => {
       if (err) {
@@ -97,26 +92,11 @@ const createWindow = () => {
 
       unfilledRooms = makeUnfilledRooms(blueprintCopy, unfilledRooms);   
 
-      
-      [blueprintCopy, unfilledRooms] = raRoomAssign(blueprintCopy, unfilledRooms, queuesUF['ra'].concat(queuesUM['ra']));   
-      [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = LLCRoomAssign({"LLC FirstGen" : 2, "LLC Global Village": 2}, blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
-      [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = locationRoomAssign(blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
-      [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = completeUnfilledRooms(blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
-      [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = roomAssign(blueprintCopy, unfilledRooms, "roommate", queuesUM, queuesUF, queuesLM, queuesLF);
-      [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = completeUnfilledRooms(blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
-      [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = roomAssign(blueprintCopy, unfilledRooms, "noPref", queuesUM, queuesUF, queuesLM, queuesLF);
+      const finalBlueprint = runRoomAssignment(blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
+      convertJsonToExcel(tempName(finalBlueprint));
 
-
-      const bp = JSON.stringify(tempName(blueprintCopy))
-      fs.writeFile("output.json", bp, err => {
-          if(err){
-            console.log(err)
-              throw err;
-          }
-      })// End of fs.writeFile function.
-
-      const x = tempName(blueprintCopy);
-      convertJsonToExcel(x)
+      const currentWin = BrowserWindow.getFocusedWindow();
+      currentWin.webContents.send('changePageToPostprocess');
     })
   })
 
@@ -139,3 +119,33 @@ const createWindow = () => {
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
   })
+
+  const createPopupWindow = () => {
+    const currentWin = BrowserWindow.getFocusedWindow();
+    currentWin.showInactive();
+    currentWin.setClosable(false);
+    const newWin = new BrowserWindow({
+      width: 350,
+      height: 175,
+      minWidth: 350,
+      minHeight: 175,
+      frame: true,
+      resizable: true,
+      parent: currentWin,
+      icon: join(__dirname, '../assets/psulogo.ico'),
+      webPreferences: {
+        preload: join(__dirname, 'preload.js'),
+        devTools: true,
+        sandbox: false
+      }
+    })
+    newWin.loadFile('src/views/popup.html')
+  }
+
+  const closePopupWindow = () => {
+    const currentWin = BrowserWindow.getFocusedWindow();
+    const parentWin = currentWin.getParentWindow();
+    parentWin.show();
+    parentWin.setClosable(true);
+    currentWin.close();
+  }

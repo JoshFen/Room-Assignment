@@ -1,4 +1,3 @@
-
 function runRoomAssignment(blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF) {
     [blueprintCopy, unfilledRooms] = raRoomAssign(blueprintCopy, unfilledRooms, queuesUF['ra'].concat(queuesUM['ra']));   
     [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = LLCRoomAssign({"LLC FirstGen" : 2, "LLC Global Village": 2}, blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
@@ -7,6 +6,7 @@ function runRoomAssignment(blueprintCopy, unfilledRooms, queuesUM, queuesUF, que
     [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = roomAssign(blueprintCopy, unfilledRooms, "roommate", queuesUM, queuesUF, queuesLM, queuesLF);
     [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = completeUnfilledRooms(blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
     [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = roomAssign(blueprintCopy, unfilledRooms, "noPref", queuesUM, queuesUF, queuesLM, queuesLF);
+    return blueprintCopy;
 }
 
 function makeUnfilledRooms(blueprint, unfilledRooms) {
@@ -601,6 +601,7 @@ function roomAssign(blueprint, unfilledRooms, queueType, upperMalePairs, upperFe
 
 ///////////////////////////////////// Exports. /////////////////////////////////////
 module.exports = {
+    runRoomAssignment,
     makeUnfilledRooms,
     raRoomAssign, 
     LLCRoomAssign,

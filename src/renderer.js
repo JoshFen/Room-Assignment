@@ -5,14 +5,17 @@ function changePage(e, url) {
     window.location.href = url;
 }
 
-if (currentPage == 'index.html') {  
+if (currentPage == 'index.html') {
+
+    console.log(window.api.changePageToPreprocess());
+
     const fileInput = document.getElementById('fileInput');
     const dragAndDropInput = document.getElementById("dragAndDrop");
     let dropArea = document.getElementById('dragAndDrop');
     const chosenFileText = document.getElementById('chosenFileText');
     const menuButton = document.getElementById('menuIcon');
     const INVALID_FILE_STRING = 'File must be an Excel sheet (.xls)';
-    
+
     // On submit listener for the form that contains the file input
     document.getElementById('excelSheetForm').onsubmit = (e) => {
         // filePath variable holds the path to the excel file
@@ -23,7 +26,7 @@ if (currentPage == 'index.html') {
         * we trigger the isLoading() function defined below.
         */ 
         window.api.uploadFile(filePath);
-        window.api.runAssignment();
+        window.api.changePageToPreprocess();
         //changePage(e, 'views/preprocess.html');
     }
 
@@ -63,11 +66,13 @@ if (currentPage == 'index.html') {
     })
 
     dragAndDropInput.addEventListener('drop', (e) => {
+
         let dt = e.dataTransfer;
         let file = dt.files[0];
         if (file.type === 'application/vnd.ms-excel') {
             fileInput.files = dt.files;
             changeFileText(true, dt.files[0].path);
+            
         }
         else {
             fileInput.files = null;
@@ -83,15 +88,32 @@ if (currentPage == 'index.html') {
         chosenFileText.innerText = text;
         if (validFile == true) {
             chosenFileText.style.color = 'var(--success)';
+            enableButton();
         }
         else {
             chosenFileText.style.color = 'var(--danger)';
+            disableButton();
         }
+    }
+
+    function disableButton() {
+        const beginButton = document.getElementById('beginButton');
+        beginButton.disabled = true;
+        beginButton.classList.add('disabled');
+    }
+
+    function enableButton() {
+        const beginButton = document.getElementById('beginButton');
+        beginButton.disabled = false;
+        beginButton.classList.remove('disabled');
     }
 }
 
 
 if (currentPage == 'preprocess.html') {
+
+    window.api.changePageToPostprocess();
+
     const LLCForm = document.getElementById('LLCForm');
     LLCForm.onsubmit = (e) => {
         e.preventDefault();
@@ -108,8 +130,7 @@ if (currentPage == 'preprocess.html') {
         }
         while (counter < 3);
 
-        window.api.sendLLCInfo(e);
-        changePage(e, 'postprocess.html');
+        window.api.sendLLCInfo(data);
     }
 }
 
@@ -118,5 +139,18 @@ if (currentPage == 'postprocess.html') {
     const downloadButton = document.getElementById('downloadFileButton');
     downloadButton.addEventListener('click', async () => {
         const response =  await window.api.downloadFile();
+    })
+}
+
+if (currentPage == 'popup.html') {
+
+    const runButton = document.getElementById('popupRunButton');
+    runButton.addEventListener('click', () => {
+        window.api.runAssignment();
+    })
+
+    const cancelButton = document.getElementById('popupCancelButton');
+    cancelButton.addEventListener('click', () => {
+        window.api.cancelRun();
     })
 }

@@ -14,6 +14,14 @@ contextBridge.exposeInMainWorld('api', {
     // 'runAssignment' sub-channel starts the room assignment process
     runAssignment: () => ipcRenderer.invoke('runAssignment'),
     // 'downloadFile' sub-channel allows for result file to be downloaded
-    downloadFile: (data) => ipcRenderer.invoke('downloadFile', {url: join(__dirname, '../assets/close-icon.svg')}),
-    downloadComplete: (data) => { console.log(data); ipcRenderer.addListener('downloadComplete', data)}
+    downloadFile: () => ipcRenderer.invoke('downloadFile', {url: join(__dirname, '../assets/close-icon.svg')}),
+    downloadComplete: (data) => { console.log(data); ipcRenderer.addListener('downloadComplete', data)},
+    // 'triggerPopup' sub-channel opens a confirmation popup
+    triggerPopup: (data) => ipcRenderer.invoke('triggerPopup', data),
+    // 'cancelRun' sub-channel cancels the room assignment process before it runs
+    cancelRun: (data) => ipcRenderer.send('cancelRun', data),
+    // 'changePageToPreprocess' sub-channel changes the current window's displayed html page to preprocess.html
+    changePageToPreprocess: () => ipcRenderer.addListener('changePageToPreprocess', () => window.location.href = 'views/preprocess.html'),
+    // 'changePageToPostprocess' sub-channel changes the current window's displayed html page to postprocess.html
+    changePageToPostprocess: () => ipcRenderer.addListener('changePageToPostprocess', () => window.location.href = 'postprocess.html')
 })
