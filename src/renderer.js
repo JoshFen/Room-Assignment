@@ -5,9 +5,19 @@ function changePage(e, url) {
     window.location.href = url;
 }
 
+function disableButton(button) {
+    button.disabled = true;
+    button.classList.add('disabled');
+}
+
+function enableButton(button) {
+    button.disabled = false;
+    button.classList.remove('disabled');
+}
+
 if (currentPage == 'index.html') {
 
-    console.log(window.api.changePageToPreprocess());
+    window.api.changePageToPreprocess();
 
     const fileInput = document.getElementById('fileInput');
     const dragAndDropInput = document.getElementById("dragAndDrop");
@@ -88,24 +98,12 @@ if (currentPage == 'index.html') {
         chosenFileText.innerText = text;
         if (validFile == true) {
             chosenFileText.style.color = 'var(--success)';
-            enableButton();
+            enableButton(document.getElementById('beginButton'));
         }
         else {
             chosenFileText.style.color = 'var(--danger)';
-            disableButton();
+            disableButton(document.getElementById('beginButton'));
         }
-    }
-
-    function disableButton() {
-        const beginButton = document.getElementById('beginButton');
-        beginButton.disabled = true;
-        beginButton.classList.add('disabled');
-    }
-
-    function enableButton() {
-        const beginButton = document.getElementById('beginButton');
-        beginButton.disabled = false;
-        beginButton.classList.remove('disabled');
     }
 }
 
@@ -113,6 +111,18 @@ if (currentPage == 'index.html') {
 if (currentPage == 'preprocess.html') {
 
     window.api.changePageToPostprocess();
+    window.api.LLCInfoError();
+
+    const inputs = document.querySelectorAll('.LLCNameInput').forEach( element => {
+        element.addEventListener('keyup', () => {
+            if (element.value !== '') {
+                enableButton(document.getElementById('continueButton'));
+            } 
+            else {
+                disableButton(document.getElementById('continueButton'));
+            }
+        })
+    });
 
     const LLCForm = document.getElementById('LLCForm');
     LLCForm.onsubmit = (e) => {
@@ -142,7 +152,7 @@ if (currentPage == 'postprocess.html') {
     })
 }
 
-if (currentPage == 'popup.html') {
+if (currentPage == 'confirmation-popup.html') {
 
     const runButton = document.getElementById('popupRunButton');
     runButton.addEventListener('click', () => {
@@ -152,5 +162,13 @@ if (currentPage == 'popup.html') {
     const cancelButton = document.getElementById('popupCancelButton');
     cancelButton.addEventListener('click', () => {
         window.api.cancelRun();
+    })
+}
+
+if (currentPage == 'download-error-popup.html') {
+
+    const okayButton = document.getElementById('popupOkayButton');
+    okayButton.addEventListener('click', () => {
+        window.api.closeErrorPopup();
     })
 }

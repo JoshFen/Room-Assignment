@@ -1,7 +1,6 @@
 
 const { PSU_ID, GROUP_TYPE_FIRST_YEAR, REQUESTED_LLC_1, ROOMMATE_1, PRIORITY, LOCATION, LLC, ROOMMATE_1_MATCH, MUTUAL_ROOMMATE, GROUP_TYPE, GROUP_TYPE_RES_LIFE, REQUESTED_FLOOR_1 } = require("../constants");
 const RoommatePair = require("../entities/RoommatePair");
-const fs = require('fs');
 const { pairStudents } = require("./studentPairer");
 
 function determineStudentPriority(studentArray){
@@ -59,7 +58,7 @@ function determineStudentPriority(studentArray){
 
 function LLCPriority(LLCQueue) {
     if (LLCQueue.length === 0) {
-        return [[], []];
+        return {paired: [], extras: []};
     }
 
     const unpairedLLCs = {};
@@ -71,7 +70,7 @@ function LLCPriority(LLCQueue) {
     const allLLCs = {};
     const extraLLCStudents = {}
     for (const LLC in unpairedLLCs) {
-        const [paired, unpaired]  = pairStudents(unpairedLLCs[LLC]);
+        const [paired, unpaired] = pairStudents(unpairedLLCs[LLC]);
         allLLCs[LLC] = paired;
         extraLLCStudents[LLC] = [unpaired];
     }

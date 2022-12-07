@@ -1,4 +1,6 @@
 const XLSX = require('xlsx')
+const OUTPUT_PATH = 'data/outputFile/';
+
 
 function getStudentAtIndex(index, studentKey, roommates) {
     return roommates[index] != undefined ? roommates[index][studentKey]['PSU_ID'] : '';
@@ -8,7 +10,7 @@ function getRAStudent(roommates) {
     return roommates[0]['PSU_ID'];
 }
 
-function tempName(blueprintJSON) {
+function makeStudentsReadable(blueprintJSON) {
 
     let newJSON = [];
 
@@ -43,6 +45,10 @@ function tempName(blueprintJSON) {
     return newJSON;
 }
 
+function makeExtraStudentsReadable(extraStudents) {
+    let newJSON = [];
+}
+
 const convertJsonToExcel = (file) => {
     const workSheet = XLSX.utils.json_to_sheet(file);
     const workBook = XLSX.utils.book_new();
@@ -53,11 +59,15 @@ const convertJsonToExcel = (file) => {
 
     XLSX.write(workBook,{bookType:"xlsx",type:"binary"})
 
-    XLSX.writeFile(workBook, "LionsGate_Room_Assignment_"+String(today.getDate())+"-"+String(today.getMonth())+"-"+String(today.getFullYear())+".xlsx")
+    const filePath = OUTPUT_PATH + "LionsGate_Room_Assignment_"+String(today.getDate())+"-"+String(today.getMonth())+"-"+String(today.getFullYear())+".xlsx";
+
+    XLSX.writeFile(workBook, filePath, )
+
+    return filePath;
   }
 
 ///////////////////////////////////// Exports. /////////////////////////////////////
 module.exports = {
-    tempName,
+    makeStudentsReadable,
     convertJsonToExcel
   };

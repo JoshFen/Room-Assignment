@@ -1,6 +1,12 @@
-function runRoomAssignment(blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF) {
-    [blueprintCopy, unfilledRooms] = raRoomAssign(blueprintCopy, unfilledRooms, queuesUF['ra'].concat(queuesUM['ra']));   
-    [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = LLCRoomAssign({"LLC FirstGen" : 2, "LLC Global Village": 2}, blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
+function runRoomAssignment(blueprintCopy, unfilledRooms, LLCInfoFromStore, queuesUM, queuesUF, queuesLM, queuesLF) {
+
+    if (!isValidLLCInfo(LLCInfoFromStore, queuesUM['LLCs'], queuesUF['LLCs'], queuesLM['LLCs'], queuesLF['LLCs'])) {
+        return false;
+    }
+
+    [blueprintCopy, unfilledRooms] = raRoomAssign(blueprintCopy, unfilledRooms, queuesUF['ra'].concat(queuesUM['ra']));  
+    //console.log(LLCInfoFromStore) // Breaks the app
+    [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = LLCRoomAssign(LLCInfoFromStore, blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
     [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = locationRoomAssign(blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
     [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = completeUnfilledRooms(blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
     [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = roomAssign(blueprintCopy, unfilledRooms, "roommate", queuesUM, queuesUF, queuesLM, queuesLF);
@@ -20,7 +26,6 @@ function makeUnfilledRooms(blueprint, unfilledRooms) {
 
 ///////////////////////////////////// RA room assignment functions. /////////////////////////////////////
 function raRoomAssign(blueprint, unfilledRooms, RAQueue) {
-
     raRooms = {
         112: '',
         212: '',
@@ -159,12 +164,34 @@ function isValidLLCQueue(studentPairs, LLCName) {
     return studentPairs["LLCs"] != undefined && studentPairs["LLCs"][LLCName] != undefined && studentPairs["LLCs"][LLCName].length > 0;
 } // End of isValidLLCQueue function.
 
+function objectHasSameLength(obj1, obj2) {
+    return obj1 !== undefined || obj2 !== undefined ?Object.keys(obj1).length == Object.keys(obj2).length : false;
+}
+
+function isValidLLCInfo(LLCInfo, upperMalePairsLLCs, upperFemalePairsLLCs, lowerMalePairsLLCs, lowerFemalePairsLLCs) {
+    
+    if(!objectHasSameLength(LLCInfo, upperMalePairsLLCs) && 
+        !objectHasSameLength(LLCInfo, upperFemalePairsLLCs) &&
+        !objectHasSameLength(LLCInfo, lowerMalePairsLLCs) &&
+        !objectHasSameLength(LLCInfo, lowerFemalePairsLLCs)) {
+            return false;
+        }
+    for (LLCName in LLCInfo) {
+        if (upperMalePairsLLCs[LLCName] == undefined &&
+            upperFemalePairsLLCs[LLCName] == undefined &&
+            lowerMalePairsLLCs[LLCName] == undefined &&
+            lowerFemalePairsLLCs[LLCName] == undefined) {
+                return false;
+            }
+    }
+    return true;
+}
+
 function LLCRoomAssign(LLCInfo, blueprint, unfilledRooms, upperMalePairs, upperFemalePairs, lowerMalePairs, lowerFemalePairs) {
 
     let counter = 1; // Keeps track of what gender/student year to assign to a room.
 
     for(const LLCName in LLCInfo) { // Iterate for each LLC from user input.
-
         let floorNum = LLCInfo[LLCName]; // Assuming LLC info is obj 
 
         for(const roomNum in blueprint["floor"][floorNum]["rooms"]) { // Iterates for each room on the floor given for current LLC.

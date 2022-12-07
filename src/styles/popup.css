@@ -5,9 +5,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
 .popupButtons button {
     margin-left: .5em;
     margin-right: .5em;
+}
+
+.error {
+    color: var(--danger);
 }

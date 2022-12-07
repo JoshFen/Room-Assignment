@@ -14,7 +14,7 @@ contextBridge.exposeInMainWorld('api', {
     // 'runAssignment' sub-channel starts the room assignment process
     runAssignment: () => ipcRenderer.invoke('runAssignment'),
     // 'downloadFile' sub-channel allows for result file to be downloaded
-    downloadFile: () => ipcRenderer.invoke('downloadFile', {url: join(__dirname, '../assets/close-icon.svg')}),
+    downloadFile: () => ipcRenderer.send('downloadFile'),
     downloadComplete: (data) => { console.log(data); ipcRenderer.addListener('downloadComplete', data)},
     // 'triggerPopup' sub-channel opens a confirmation popup
     triggerPopup: (data) => ipcRenderer.invoke('triggerPopup', data),
@@ -23,5 +23,9 @@ contextBridge.exposeInMainWorld('api', {
     // 'changePageToPreprocess' sub-channel changes the current window's displayed html page to preprocess.html
     changePageToPreprocess: () => ipcRenderer.addListener('changePageToPreprocess', () => window.location.href = 'views/preprocess.html'),
     // 'changePageToPostprocess' sub-channel changes the current window's displayed html page to postprocess.html
-    changePageToPostprocess: () => ipcRenderer.addListener('changePageToPostprocess', () => window.location.href = 'postprocess.html')
+    changePageToPostprocess: () => ipcRenderer.addListener('changePageToPostprocess', () => window.location.href = 'postprocess.html'),
+    // 'LLCInfoError' sub-channel sends a message that the user LLC input does not match with the excel sheet
+    LLCInfoError : () => ipcRenderer.addListener('LLCInfoError', () => document.getElementById('errorMessage').hidden = false),
+    // 'closeErrorPopup' sub-channel closes an error popup window and returns focus to the parent window
+    closeErrorPopup: () => ipcRenderer.send('closeErrorPopup')
 })
