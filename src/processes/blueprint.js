@@ -116,7 +116,6 @@ function createBlueprint(floorplanJSON){ // Function to create blueprint from st
             if(err){
                 throw err;
             }
-            console.log("Blueprint successfully created.")
         })// End of fs.writeFile function.
 
     }) // End of fs.readfile function. (Moved to widen scope of jsonString to be called in for loop)

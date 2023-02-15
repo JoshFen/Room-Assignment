@@ -1,9 +1,9 @@
-
-const { PSU_ID, GROUP_TYPE_FIRST_YEAR, REQUESTED_LLC_1, ROOMMATE_1, PRIORITY, LOCATION, LLC, ROOMMATE_1_MATCH, MUTUAL_ROOMMATE, GROUP_TYPE, GROUP_TYPE_RES_LIFE, REQUESTED_FLOOR_1 } = require("../constants");
+const { REQUESTED_LLC_1, ROOMMATE_1, PRIORITY, LOCATION, LLC, ROOMMATE_1_MATCH, MUTUAL_ROOMMATE, GROUP_TYPE, GROUP_TYPE_RES_LIFE, REQUESTED_FLOOR_1 } = require("../constants");
 const RoommatePair = require("../entities/RoommatePair");
+const { handleAnExtra } = require("./handleExtraStudents");
 const { pairStudents } = require("./studentPairer");
 
-function determineStudentPriority(studentArray){
+function determineStudentPriority(studentArray) {
     let [raQueue, roommateQueue, LLCQueue, locationQueue, noPrefQueue]   = [[], [], [], [], []];
 
     // Iterate through array of student objects
@@ -35,10 +35,14 @@ function determineStudentPriority(studentArray){
     const roommates = doRoommatesBelongInLLC(roommateQueue);
     const [f1, f2, f3, f4, f5, floorExtras] = locationPriority(locationQueue);
     const [noPrefPairs, noPrefExtras] = pairStudents(noPrefQueue);
-    const extraStudents = {'LLC': LLCs['extras'], 'Floor': floorExtras, 'noPrefExtras': noPrefExtras}
+
+    //const extraStudents = {'LLC': LLCs['extras'], 'Floor': floorExtras, 'noPrefExtras': [noPrefExtras]}
+    
+    const exs = [...floorExtras, ...[handleAnExtra(noPrefExtras,'noPref')], ...LLCs.extras].filter((x) => x !== undefined)
+    
     const finalLLCs = putRoommatesInLLC(roommates['toLLC'], LLCs['paired'])
     const roommatesOfFloor = doRoommatesBelongInFloor(roommates['notToLLC']);
-    const x = [...roommatesOfFloor[1], ...f1]
+
     return {
         ra: raQueue, 
         roommate: roommatesOfFloor['noPref'], 
@@ -51,10 +55,9 @@ function determineStudentPriority(studentArray){
             5: roommatesOfFloor[5].concat(f5)
         },
         noPref: noPrefPairs, 
-        extras: extraStudents
+        extras: exs
     }
 } // End  determineStudentPriority function.
-
 
 function LLCPriority(LLCQueue) {
     if (LLCQueue.length === 0) {
@@ -68,11 +71,11 @@ function LLCPriority(LLCQueue) {
     }
 
     const allLLCs = {};
-    const extraLLCStudents = {}
+    const extraLLCStudents = []
     for (const LLC in unpairedLLCs) {
         const [paired, unpaired] = pairStudents(unpairedLLCs[LLC]);
         allLLCs[LLC] = paired;
-        extraLLCStudents[LLC] = [unpaired];
+        extraLLCStudents.push(handleAnExtra(unpaired, "LLC"));
     }
     return {paired: allLLCs, extras: extraLLCStudents};
 } // End of LLCPriority function.
@@ -114,20 +117,9 @@ function getRequestedFloor(roommatePair) {
     return firstStudentFloorPreference || secondStudentFloorPreference ? (firstStudentFloorPreference ? firstStudentFloorPreference: secondStudentFloorPreference) : "noPref";
 }
 
-/*function getRequestedFloor(student) {
-    return student[REQUESTED_FLOOR_1];
-}*/
-
-
 function locationPriority(locationQueue) {
     if (locationQueue.length === 0) {
-        return [[], [], [], [], [], {
-            floor1ExtraStudent: [], 
-            floor2ExtraStudent: [], 
-            floor3ExtraStudent: [],
-            floor4ExtraStudent: [], 
-            floor5ExtraStudent: []
-        }];
+        return [[], [], [], [], [], []];
     }
 
     let floor1Floor = [] // Queue for students requesting first floor rooms.
@@ -161,13 +153,13 @@ function locationPriority(locationQueue) {
     let [floor4Pairs, floor4Extra] = pairStudents(floor4Floor);
     let [floor5Pairs, floor5Extra] = pairStudents(floor5Floor);
 
-    return [floor1Pairs, floor2Pairs, floor3Pairs, floor4Pairs, floor5Pairs, {
-        floor1ExtraStudent: floor1Extra, 
-        floor2ExtraStudent: floor2Extra, 
-        floor3ExtraStudent: floor3Extra,
-        floor4ExtraStudent: floor4Extra, 
-        floor5ExtraStudent: floor5Extra
-    }];
+    return [floor1Pairs, floor2Pairs, floor3Pairs, floor4Pairs, floor5Pairs, [
+        handleAnExtra(floor1Extra, "floor"),
+        handleAnExtra(floor2Extra, "floor"),
+        handleAnExtra(floor3Extra, "floor"),
+        handleAnExtra(floor4Extra, "floor"),
+        handleAnExtra(floor5Extra, "floor"),
+    ]];
 } // End of locationPriority function.
 
 ///////////////////////////////////// Exports. /////////////////////////////////////

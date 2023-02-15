@@ -47,19 +47,32 @@ function makeStudentsReadable(blueprintJSON) {
 
 function makeExtraStudentsReadable(extraStudents) {
     let newJSON = [];
+
+    for (const student of extraStudents) {
+        newJSON.push(student);
+    }
+
+    return newJSON;
 }
 
-const convertJsonToExcel = (file) => {
+const convertJsonToExcel = (file, isExtra) => {
     const workSheet = XLSX.utils.json_to_sheet(file);
     const workBook = XLSX.utils.book_new();
-    let today = new Date()
+    let today = new Date();
     XLSX.utils.book_append_sheet(workBook, workSheet, "LionsGate Room Assignment")
 
     XLSX.write(workBook,{bookType:"xlsx",type:"buffer"})
 
     XLSX.write(workBook,{bookType:"xlsx",type:"binary"})
 
-    const filePath = OUTPUT_PATH + "LionsGate_Room_Assignment_"+String(today.getDate())+"-"+String(today.getMonth())+"-"+String(today.getFullYear())+".xlsx";
+    let filePath = ""; 
+
+    if (!isExtra) {
+        filePath = OUTPUT_PATH + "LionsGate_Room_Assignment_" + String(today.getDate())+ "-" + String(today.getMonth()) + "-" + String(today.getFullYear()) + ".xlsx";
+    }
+    else {
+        filePath = OUTPUT_PATH + "LionsGate_Room_Assignment_Extras" + String(today.getDate())+ "-" + String(today.getMonth()) + "-" + String(today.getFullYear()) + ".xlsx";
+    }
 
     XLSX.writeFile(workBook, filePath, )
 
@@ -69,5 +82,6 @@ const convertJsonToExcel = (file) => {
 ///////////////////////////////////// Exports. /////////////////////////////////////
 module.exports = {
     makeStudentsReadable,
+    makeExtraStudentsReadable,
     convertJsonToExcel
   };

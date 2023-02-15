@@ -166,3 +166,11 @@ span {
     border-left: none;
     border-right: none;
 }
+
+#closeIcon {
+    -webkit-app-region: no-drag
+}
+
+#minimizeIcon {
+    -webkit-app-region: no-drag
+}

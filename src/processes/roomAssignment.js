@@ -1,18 +1,20 @@
+const { handleExtraStudents } = require("./handleExtraStudents");
+
 function runRoomAssignment(blueprintCopy, unfilledRooms, LLCInfoFromStore, queuesUM, queuesUF, queuesLM, queuesLF) {
 
     if (!isValidLLCInfo(LLCInfoFromStore, queuesUM['LLCs'], queuesUF['LLCs'], queuesLM['LLCs'], queuesLF['LLCs'])) {
-        return false;
+        return [false, false];
     }
 
     [blueprintCopy, unfilledRooms] = raRoomAssign(blueprintCopy, unfilledRooms, queuesUF['ra'].concat(queuesUM['ra']));  
-    //console.log(LLCInfoFromStore) // Breaks the app
     [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = LLCRoomAssign(LLCInfoFromStore, blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
     [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = locationRoomAssign(blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
     [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = completeUnfilledRooms(blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
     [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = roomAssign(blueprintCopy, unfilledRooms, "roommate", queuesUM, queuesUF, queuesLM, queuesLF);
     [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = completeUnfilledRooms(blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF);
     [blueprintCopy, unfilledRooms, queuesUM, queuesUF, queuesLM, queuesLF] = roomAssign(blueprintCopy, unfilledRooms, "noPref", queuesUM, queuesUF, queuesLM, queuesLF);
-    return blueprintCopy;
+    const extraStudents = handleExtraStudents([queuesUM, queuesUF, queuesLM, queuesLF]);
+    return [blueprintCopy, extraStudents];
 }
 
 function makeUnfilledRooms(blueprint, unfilledRooms) {
@@ -223,7 +225,6 @@ function LLCRoomAssign(LLCInfo, blueprint, unfilledRooms, upperMalePairs, upperF
                                         counter += 2; // Move counter to upper female pairs queue.
                                     }
                                     else {
-                                        console.log('Room Incomplete', groupType);
                                         break; // The remained of the room will be empty.
 
                                     }
@@ -244,7 +245,6 @@ function LLCRoomAssign(LLCInfo, blueprint, unfilledRooms, upperMalePairs, upperF
                                         counter += 2; // Move counter to lower male pairs queue.
                                     }
                                     else {
-                                        console.log('Room Incomplete', groupType);
                                         break; // The remained of the room will be empty.
                                     }
                                 }
@@ -264,7 +264,6 @@ function LLCRoomAssign(LLCInfo, blueprint, unfilledRooms, upperMalePairs, upperF
                                         counter += 2; // Move counter to lower female pairs queue.
                                     }
                                     else {
-                                        console.log('Room Incomplete', groupType);
                                         break; // The remained of the room will be empty.
                                     }
                                 }
@@ -284,7 +283,6 @@ function LLCRoomAssign(LLCInfo, blueprint, unfilledRooms, upperMalePairs, upperF
                                         counter += 2; // Goes to lower male.
                                     }
                                     else{
-                                        console.log('Room Incomplete', groupType); 
                                         break; // The remained of the room will be empty.
                                     }
                                 }
@@ -491,7 +489,7 @@ function fillRoom(blueprint, floorNum, roomNum, studentPairs, queueType, unfille
                 blueprint["floor"][floorNum]["rooms"][roomNum]["roommates"].push(studentPairs[queueType].pop())  
             }
             else {
-                console.log("Not enough matching student types to fill room.")
+
             }
         }
     

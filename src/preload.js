@@ -15,7 +15,7 @@ contextBridge.exposeInMainWorld('api', {
     runAssignment: () => ipcRenderer.invoke('runAssignment'),
     // 'downloadFile' sub-channel allows for result file to be downloaded
     downloadFile: () => ipcRenderer.send('downloadFile'),
-    downloadComplete: (data) => { console.log(data); ipcRenderer.addListener('downloadComplete', data)},
+    downloadComplete: (data) => { ipcRenderer.addListener('downloadComplete', data) },
     // 'triggerPopup' sub-channel opens a confirmation popup
     triggerPopup: (data) => ipcRenderer.invoke('triggerPopup', data),
     // 'cancelRun' sub-channel cancels the room assignment process before it runs
@@ -27,5 +27,9 @@ contextBridge.exposeInMainWorld('api', {
     // 'LLCInfoError' sub-channel sends a message that the user LLC input does not match with the excel sheet
     LLCInfoError : () => ipcRenderer.addListener('LLCInfoError', () => document.getElementById('errorMessage').hidden = false),
     // 'closeErrorPopup' sub-channel closes an error popup window and returns focus to the parent window
-    closeErrorPopup: () => ipcRenderer.send('closeErrorPopup')
+    closeErrorPopup: () => ipcRenderer.send('closeErrorPopup'),
+    // 'close' sub-channel closes the application
+    close: () => ipcRenderer.send('close'),
+    // 'minimize sub-channel minimizes the application
+    minimize: () => ipcRenderer.send('minimize')
 })

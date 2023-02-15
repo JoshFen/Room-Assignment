@@ -10,7 +10,7 @@ process :
 - Fill remaining spots and waitlist spots with students who did not list preferences
 
 The program should output the desired room plans in some kind of spread sheet or display that is easily 
-read and can be copited for data entry. The client could also use the addition of sheets for Learning
+read and can be copied for data entry. The client could also use the addition of sheets for Learning
 Living waitlisted students and regular waitlisted students with housing contracts. 
 
 ############################################ Info We Need #############################################

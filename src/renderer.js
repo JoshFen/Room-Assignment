@@ -1,5 +1,20 @@
 const currentPage = window.location.pathname.split('/').slice(-1);
 
+const minimizeButton = document.getElementById('minimizeIcon');
+if (minimizeButton) {
+    minimizeButton.addEventListener('click', () => {
+        window.api.minimize();
+    });
+}
+
+const closeButton = document.getElementById('closeIcon');
+if (closeButton) {
+    closeButton.addEventListener('click', () => {
+        window.api.close();
+    });
+}
+
+
 function changePage(e, url) {
     e.preventDefault();
     window.location.href = url;

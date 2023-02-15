@@ -1,9 +1,9 @@
 const RoommatePair = require("../entities/RoommatePair");
 
 function pairStudents(queue) {
-    let extraPerson;
+    let extraPerson = [];
     if ((queue.length % 2) != 0) {
-        extraPerson = queue.pop();
+        extraPerson.push(queue.pop());
     }
     let pairs = [];
     for (let index = 0; index < queue.length; index += 2) { 

@@ -11,7 +11,7 @@ const fs = require('fs');
 const { splitStudents } = require('./processes/studentSplitter');
 const { determineStudentPriority } = require('./processes/priorities');
 const { makeUnfilledRooms, runRoomAssignment } = require('./processes/roomAssignment');
-const { makeStudentsReadable, convertJsonToExcel } = require('./processes/convertToExcel');
+const { makeStudentsReadable, makeExtraStudentsReadable, convertJsonToExcel } = require('./processes/convertToExcel');
 
 // Creates store for storing user data
 const store = new Store();
@@ -27,7 +27,7 @@ const createWindow = () => {
     height: 600,
     minWidth: 800,
     minHeight: 600,
-    frame: true,
+    frame: false,
     resizable: false,
     icon: join(__dirname, '../assets/psulogo.ico'),
     webPreferences: {
@@ -81,8 +81,9 @@ ipcMain.handle('runAssignment', (channel, data) => {
   let queuesUF = determineStudentPriority(uF);
   let queuesLM = determineStudentPriority(lM);
   let queuesLF = determineStudentPriority(lF);
-  //console.log(queuesLM['LLCs'], queuesLF['LLCs'], queuesUF['LLCs'], queuesUM['LLCs'])
   
+  const extras = [queuesUM.extras, queuesLF.extras, queuesLM.extras, queuesUF.extras];
+
   fs.readFile(join(__dirname, "../data/blueprint.json"), 'utf8', (err, jsonString) => {
     if (err) {
         console.log("File read failed:", err)
@@ -93,20 +94,15 @@ ipcMain.handle('runAssignment', (channel, data) => {
 
     unfilledRooms = makeUnfilledRooms(blueprintCopy, unfilledRooms);   
 
-    const finalBlueprint = runRoomAssignment(blueprintCopy, unfilledRooms, store.get('LLCInfo'), queuesUM, queuesUF, queuesLM, queuesLF);
+    const [finalBlueprint, extraStudents] = runRoomAssignment(blueprintCopy, unfilledRooms, store.get('LLCInfo'), queuesUM, queuesUF, queuesLM, queuesLF);
 
     if (finalBlueprint === false) {
       const currentWin = BrowserWindow.getFocusedWindow();
       currentWin.webContents.send('LLCInfoError');
     }
     else {
-      fs.writeFile("test.json", JSON.stringify(finalBlueprint), err => {
-        if(err){
-            throw err;
-        }
-    })// End of fs.writeFile function.
-
-      store.set('outputFilePath', join(__dirname, "../" + convertJsonToExcel(makeStudentsReadable(finalBlueprint))));
+      store.set('outputFilePath', join(__dirname, "../" + convertJsonToExcel(makeStudentsReadable(finalBlueprint), false)));
+      store.set('outputExtraFilePath', join(__dirname, "../" + convertJsonToExcel(makeExtraStudentsReadable(extraStudents), true)));
 
       const currentWin = BrowserWindow.getFocusedWindow();
       currentWin.webContents.send('changePageToPostprocess');
@@ -122,8 +118,9 @@ ipcMain.handle('runAssignment', (channel, data) => {
   */ 
 ipcMain.on('downloadFile', async (channel, data) => {
   const win = BrowserWindow.getFocusedWindow();
-  if (fs.existsSync(store.get('outputFilePath'))) {
+  if (fs.existsSync(store.get('outputFilePath')) && fs.existsSync(store.get('outputExtraFilePath'))) {
     await download(win, store.get('outputFilePath'), {openFolderWhenDone: true}).catch(err => createPopupWindow('download-error-popup.html'));
+    await download(win, store.get('outputExtraFilePath'), {openFolderWhenDone: true}).catch(err => createPopupWindow('download-error-popup.html'));
     removeFile();
   }
   else {
@@ -147,10 +144,26 @@ app.on('window-all-closed', () => {
   }
 })
 
+ipcMain.on('close', () => {
+  if (process.platform !== 'darwin') {
+    removeFile().then(app.quit());
+  }
+})
+
+ipcMain.on('minimize', () => {
+  BrowserWindow.getFocusedWindow().minimize();
+})
 
 const removeFile = async ()=> {
   if (fs.existsSync(store.get('outputFilePath'))) {
     await fs.unlink(store.get('outputFilePath'), (err => {
+      if (err) {
+        createPopupWindow('download-error-popup.html');
+      }
+    }));
+  }
+  if (fs.existsSync(store.get('outputExtraFilePath'))) {
+    await fs.unlink(store.get('outputExtraFilePath'), (err => {
       if (err) {
         createPopupWindow('download-error-popup.html');
       }
@@ -161,13 +174,13 @@ const removeFile = async ()=> {
 const createPopupWindow = (content) => {
   const currentWin = BrowserWindow.getFocusedWindow();
   currentWin.showInactive();
-  currentWin.setClosable(false);
+  //currentWin.setClosable(false);
   const newWin = new BrowserWindow({
     width: 350,
     height: 175,
     minWidth: 350,
     minHeight: 175,
-    frame: true,
+    frame: false,
     resizable: true,
     parent: currentWin,
     icon: join(__dirname, '../assets/psulogo.ico'),
